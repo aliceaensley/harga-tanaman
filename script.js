@@ -1,74 +1,45 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('speedoCanvas');
-    const ctx = canvas.getContext('2d');
+// Script ini berjalan di dalam lingkungan CEF (HTML)
+const needle = document.getElementById('speed-needle');
+const speedValueDisplay = document.getElementById('speed-value');
+const container = document.getElementById('speedometer-container');
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth * 0.2;
-        canvas.height = canvas.width;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+// Batas kecepatan maksimal untuk skala speedometer
+const MAX_SPEED = 200; // Sesuai dengan skala CSS (200 KM/H)
+const MIN_DEGREE = 135; // Sudut jarum pada 0 KM/H
+const MAX_DEGREE = 405; // Sudut jarum pada 200 KM/H (135 + 270)
 
-    let speed = 0;
-    let targetSpeed = 0;
+// Fungsi untuk mengkonversi kecepatan (KM/H) menjadi sudut rotasi (derajat)
+function getRotation(speed) {
+    if (speed >= MAX_SPEED) return MAX_DEGREE;
+    if (speed <= 0) return MIN_DEGREE;
+    
+    // Hitung persentase kecepatan dari MAX_SPEED
+    const percentage = speed / MAX_SPEED;
+    
+    // Total pergerakan jarum adalah 270 derajat (405 - 135)
+    const rotationDegrees = MIN_DEGREE + (percentage * 270);
+    
+    return rotationDegrees;
+}
 
-    function drawHUD() {
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-        const radius = canvas.width * 0.45;
+// Objek global yang akan dipanggil dari RageMP (client_packages/index.js)
+window.speedometer = {
+    updateSpeed: function(speed) {
+        const rotation = getRotation(speed);
+        
+        // 1. Gerakkan Jarum
+        needle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+        
+        // 2. Perbarui Tampilan Digital
+        const formattedSpeed = String(Math.floor(speed)).padStart(3, '0');
+        speedValueDisplay.textContent = formattedSpeed;
+    },
 
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        // Dial
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, Math.PI, 0, false);
-        ctx.lineWidth = 15;
-        ctx.strokeStyle = 'rgba(0,255,255,0.4)';
-        ctx.stroke();
-
-        // Tick marks
-        for(let i=0;i<=20;i++){
-            const angle = Math.PI + i*(Math.PI/20);
-            const x1 = cx + Math.cos(angle)*(radius-10);
-            const y1 = cy + Math.sin(angle)*(radius-10);
-            const x2 = cx + Math.cos(angle)*radius;
-            const y2 = cy + Math.sin(angle)*radius;
-            ctx.beginPath();
-            ctx.moveTo(x1,y1);
-            ctx.lineTo(x2,y2);
-            ctx.lineWidth=2;
-            ctx.strokeStyle='#0ff';
-            ctx.stroke();
+    setVisible: function(isVisible) {
+        if (isVisible) {
+            container.classList.remove('hidden');
+        } else {
+            container.classList.add('hidden');
         }
-
-        // Jarum speed
-        speed += (targetSpeed-speed)*0.05;
-        const angle = Math.PI + (speed/200)*Math.PI;
-        const sx = cx + Math.cos(angle)*radius*0.9;
-        const sy = cy + Math.sin(angle)*radius*0.9;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(sx, sy);
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = 'red';
-        ctx.stroke();
-
-        // Speed text
-        ctx.font = `${canvas.width*0.12}px Arial`;
-        ctx.fillStyle = '#0ff';
-        ctx.textAlign = 'center';
-        ctx.fillText(Math.round(speed)+' km/h', cx, cy + canvas.width*0.2);
     }
-
-    function updateSpeed() {
-        targetSpeed = (Math.sin(Date.now()/1000)*100 + 100);
-    }
-
-    function loop() {
-        updateSpeed();
-        drawHUD();
-        requestAnimationFrame(loop);
-    }
-
-    loop();
-});
+};
