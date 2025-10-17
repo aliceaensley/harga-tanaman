@@ -8,14 +8,18 @@
 }
 
 body {
-    background-color: #111;
+    background-color: transparent; /* Sekarang transparan */
+    
+    /* Mengatur body agar menempati seluruh viewport */
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    font-family: 'Press Start 2P', cursive; /* Font Pixel */
+    
+    /* Properti lain (tetap sama) */
+    font-family: 'Press Start 2P', cursive;
     color: var(--pixel-blue);
     overflow: hidden;
 }
