@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JGVRP Speedometer HUD</title>
-<link rel="stylesheet" href="styles.css">
+<title>Keren Speedometer HUD</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Container HUD untuk template -->
-<div id="hud-speedometer"></div>
 
-<!-- Sertakan file JS asli template -->
-<script src="speedometer.js"></script>
-<script src="speedometer-rmp.js"></script> <!-- JS custom untuk RageMP -->
+<div id="speedometer">
+    <div class="dial">
+        <div class="needle" id="needle"></div>
+        <div class="center-dot"></div>
+    </div>
+    <div class="speed-text" id="speedText">0 km/h</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
