@@ -3,43 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic HUD Speedometer</title>
+    <title>Small HUD Speedometer</title>
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <div id="hud-container">
+    <div id="hud-container-small">
 
-        <div id="speed-display">
-            <span id="speed-value">000</span>
-            <span id="speed-unit">MPH</span>
+        <div id="rpm-bar-container-small">
+            <div id="rpm-bar-fill-small"></div>
+            <div id="rpm-bar-light-small"></div>
         </div>
 
-        <div id="info-section">
-            <div id="gear-box">
-                <span class="label">GEAR</span>
-                <span id="gear-value">N</span>
+        <div id="main-info">
+            <div id="gear-box-small">
+                <span id="gear-value-small">N</span>
             </div>
             
-            <div id="rpm-bar-container">
-                <div id="rpm-bar-fill"></div>
-                <div id="rpm-bar-light"></div>
+            <div id="speed-display-small">
+                <span id="speed-value-small">000</span>
             </div>
 
-            <div id="rpm-value-digital">
-                RPM: <span id="rpm-value">0.0</span>K
+            <div id="unit-info-small">
+                <span id="speed-unit-small">MPH</span>
+                <span id="fuel-value-small" class="status-value">F: 100</span>
             </div>
-        </div>
-
-        <div id="status-arc-container">
-            <svg viewBox="0 0 100 50">
-                <path id="status-arc-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(0, 255, 255, 0.1)" stroke-width="5"/>
-                <path id="status-arc-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#00FFFF" stroke-width="5" stroke-dasharray="0 125.66"/>
-                <text x="50" y="45" text-anchor="middle" class="arc-label">FUEL</text>
-            </svg>
-            <span id="fuel-value">100%</span>
         </div>
         
     </div>
