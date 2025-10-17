@@ -56,17 +56,11 @@ body {
 
 /* Efek Siluet Palem */
 .palm-silhouettes {
-    position: absolute;
-    bottom: 0;
-    width: 150%; 
-    height: 100%;
-    left: -20%;
+    /* ... properti lain ... */
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path fill="%23000" opacity="0.5" d="M0 50 L10 10 L25 50 L40 5 L50 50 L70 0 L90 50 L100 40 L100 50 Z"/></svg>') repeat-x bottom;
     background-size: 50% 100%;
-    /* Miringkan sedikit agar terlihat seperti di kejauhan */
-    transform: perspective(100px) rotateX(10deg); 
+    /* ... properti lain ... */
 }
-
 /* Efek Matahari/Glow */
 .sun-glow {
     position: absolute;
