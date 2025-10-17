@@ -3,32 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speedometer Analog Retro (Simulasi)</title>
+    <title>Synthwave HUD Simulasi</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="speedometer-container">
+    
+    <div id="hud-container">
         
-        <div id="speedometer-dial">
-            
-            <div id="speed-numbers">
-                <span class="mark mark-0">0</span>
-                <span class="mark mark-40">40</span>
-                <span class="mark mark-80">80</span>
-                <span class="mark mark-120">120</span>
-                <span class="mark mark-160">160</span>
-                <span class="mark mark-200">200</span>
+        <div id="speed-section" class="hud-box">
+            <div id="speed-overlay">
+                <div class="palm-silhouettes"></div>
+                <div class="sun-glow"></div>
             </div>
             
-            <div id="center-pin"></div>
-            <div id="speed-needle"></div>
-            
-            <div id="digital-display">
-                <span id="speed-value">000</span> KM/H
+            <div id="speed-content">
+                <div id="speed-label">Speed</div>
+                <div id="speed-display-box">
+                    <span id="speed-value">050</span>
+                    <span id="speed-unit">mph</span>
+                </div>
             </div>
         </div>
+
+        <div id="stats-grid">
+            
+            <div class="stat-row">
+                <div class="stat-label">RPM</div>
+                <div class="stat-value" id="rpm-value">5821</div>
+            </div>
+            
+            <div class="stat-row">
+                <div class="stat-label">Fuel</div>
+                <div class="stat-value" id="fuel-value">49</div>
+            </div>
+            
+            <div class="stat-row">
+                <div class="stat-label">Health</div>
+                <div class="stat-value" id="health-value">100%</div>
+            </div>
+
+            <div id="health-bar-container">
+                <div id="health-bar-fill"></div>
+            </div>
+
+            <div class="stat-row gear-row">
+                <div class="stat-label">Gear</div>
+                <div class="stat-value" id="gear-value">2</div>
+                <div class="indicator-icon">
+                    <svg viewBox="0 0 24 24" id="light-indicator" class="active">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+                        <path d="M11 7h2v6h-2zM11 15h2v2h-2z" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div id="radio-section" class="hud-box">
+            <div id="radio-label">Radio</div>
+            <div id="station-name">Salad Station</div>
+            
+            <div id="audio-visualizer">
+                <div class="dot active"></div>
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+
+            <div id="radio-hint">(E) TO INTERACT</div>
+        </div>
+
+        <div id="sim-info-overlay">
+            Simulasi Aktif: Tekan 'A'/'D' untuk memindahkan Kecepatan
+        </div>
         
-        <div id="sim-info">Simulasi Aktif (Akselerasi/Deselerasi)</div>
     </div>
 
     <script src="script.js"></script>
