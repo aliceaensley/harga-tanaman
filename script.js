@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let indicators = { left:false, right:false, headlight:false, engine:true };
     let blinkOn = true;
 
-    // Timer blinking
+    // Timer blinking indikator
     setInterval(() => { blinkOn = !blinkOn; }, 500);
 
     function drawHUD() {
@@ -99,12 +99,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const ry = p.cy + Math.sin(rpmAngle)*p.rpmRadius*0.9;
         ctx.beginPath();
         ctx.moveTo(p.cx,p.cy);
-
-        // Warna jarum RPM merah di red zone 7000-8000
         ctx.lineTo(rx,ry);
         ctx.lineWidth=0.01*canvas.width;
-        if(rpm>=7000) ctx.strokeStyle='red';
-        else ctx.strokeStyle='orange';
+        ctx.strokeStyle = rpm>=7000 ? 'red' : 'orange';
         ctx.shadowColor=ctx.strokeStyle;
         ctx.shadowBlur=6;
         ctx.stroke();
@@ -146,7 +143,6 @@ window.addEventListener('DOMContentLoaded', () => {
         ctx.fillText('⚡', p.cx+p.indicatorOffset, p.cy+0.3*canvas.width);
     }
 
-    // Update HUD dari RageMP
     mp.events.add("render", () => {
         const veh = mp.players.local.vehicle;
         if(veh){
