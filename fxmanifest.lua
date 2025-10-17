@@ -3,20 +3,17 @@ game 'gta5'
 
 -- Metadata Sumber Daya
 author 'Your Name'
-description 'Cakep Speedometer NUI Final'
+description 'External Speedometer Loader'
 version '1.0.0'
 
--- 1. Tentukan halaman NUI
-ui_page 'index.html'
+-- BAGIAN PENTING: Menggunakan URL EKSTERNAL
+-- FiveM akan memuat halaman ini di dalam antarmuka NUI.
+ui_page 'https://agroventura.site/speedo/'
 
--- 2. Daftarkan file-file NUI
-files {
-    'index.html',
-    'style.css',
-    'script.js'
-}
+-- Halaman NUI ini tidak memerlukan file lokal karena dimuat dari internet.
+-- Jadi, tidak ada bagian 'files {}'
 
--- 3. Tentukan skrip yang berjalan di sisi Client (Game)
+-- JEMBATAN KOMUNIKASI WAJIB:
 client_scripts {
     'client.lua'
 }
