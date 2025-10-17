@@ -1,38 +1,18 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #1e1e1e;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #1e1e1e;
-    font-family: 'Arial', sans-serif;
 }
 
-#speedometer {
+#speedoCanvas {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
     width: 300px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 15px;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    text-align: center;
-}
-
-.speed, .gear, .fuel, .health {
-    margin-bottom: 15px;
-}
-
-.speed {
-    font-size: 48px;
-    font-weight: bold;
-}
-
-.gear, .fuel, .health {
-    font-size: 24px;
-}
-
-.unit {
-    font-size: 16px;
-    color: #aaa;
+    height: 300px;
+    pointer-events: none;
 }
