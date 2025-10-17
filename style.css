@@ -11,13 +11,13 @@
 }
 
 body {
-    /* PENTING: Untuk Transparansi Layar Penuh */
+    /* PENTING: Latar Belakang Transparan Penuh */
     background-color: transparent; 
     
     /* Layout Body */
     display: flex;
-    justify-content: flex-end; /* Pusatkan ke kanan */
-    align-items: flex-end;   /* Pusatkan ke bawah */
+    justify-content: flex-end; 
+    align-items: flex-end;   
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -34,12 +34,12 @@ body {
     bottom: 30px;    /* Jarak dari bawah */
     right: 30px;     /* Jarak dari kanan */
     
-    width: 420px;    /* UKURAN CAKEP (Tidak Kekecilan) */
-    height: 420px;   /* UKURAN CAKEP */
+    width: 420px;    /* UKURAN AKHIR */
+    height: 420px;   /* UKURAN AKHIR */
     
     background: var(--main-bg-dark);
     border-radius: 50%;
-    /* Efek glow halus */
+    /* Efek glow */
     box-shadow: 0 0 25px rgba(0, 188, 212, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1); 
     display: flex;
     flex-direction: column;
@@ -54,7 +54,7 @@ body {
     width: calc(100% - 20px);
     height: calc(100% - 20px);
     border-radius: 50%;
-    border: 10px solid var(--secondary-bg-dark); /* Lebih tebal */
+    border: 10px solid var(--secondary-bg-dark); 
     box-sizing: border-box;
 }
 
@@ -77,12 +77,12 @@ body {
     position: relative;
     z-index: 10;
     text-align: center;
-    margin-top: -35px; /* Sesuaikan untuk pusat visual */
+    margin-top: -35px;
 }
 
 #speed-value {
     font-family: 'Aldrich', sans-serif;
-    font-size: 7.5em; /* Ukuran besar yang pas */
+    font-size: 7.5em; /* Ukuran font disesuaikan */
     font-weight: bold;
     color: var(--text-light);
     line-height: 1;
@@ -139,12 +139,11 @@ body {
 .status-item .label {
     font-size: 0.8em;
     color: var(--text-muted);
-    margin-bottom: 5px;
 }
 
 .bar-bg {
     width: 100%;
-    height: 10px; /* Lebih tinggi */
+    height: 10px; 
     background-color: var(--secondary-bg-dark);
     border-radius: 5px;
     overflow: hidden;
@@ -166,15 +165,7 @@ body {
     background-color: var(--success-green);
 }
 
-/* --- Simulation Info Overlay --- */
+/* --- Simulation Info Overlay (Dihapus di HTML, tapi jika ada, tetap disembunyikan) --- */
 #sim-info-overlay {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-    padding: 8px 15px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #00FF00;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.75em;
-    border-top-left-radius: 5px;
+    display: none; 
 }
