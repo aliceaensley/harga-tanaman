@@ -1,11 +1,11 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #111;
+    background-color: #111; /* agar speedometer terlihat */
 }
 
 #speedoCanvas {
-    position: fixed; /* tetap di pojok layar saat scroll */
+    position: fixed; /* tetap di pojok layar */
     bottom: 20px;    /* jarak dari bawah layar */
     right: 20px;     /* jarak dari kanan layar */
     pointer-events: none;
