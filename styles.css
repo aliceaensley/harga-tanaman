@@ -1,20 +1,30 @@
-/* Container spedometer kecil di pojok kanan bawah */
-.spedo-small {
+/* Container HUD pojok kanan bawah */
+.hud-speedometer {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     bottom: 20px;
     right: 20px;
+    pointer-events: none; /* supaya tidak mengganggu klik */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Dial transparan */
+.dial {
+    position: relative;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    background: rgba(0,0,0,0.7);
-    border: 5px solid #00ffcc;
+    background: rgba(0,0,0,0.3); /* transparan */
+    border: 3px solid #00ffcc;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Arial, sans-serif;
 }
 
-/* Jarum spedometer */
+/* Jarum */
 .needle {
     position: absolute;
     width: 2px;
@@ -24,16 +34,14 @@
     left: 50%;
     transform-origin: bottom center;
     transform: rotate(0deg);
-    transition: transform 0.1s linear;
+    transition: transform 0.05s linear;
 }
 
 /* Teks kecepatan */
 .speed-text {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
+    margin-top: 5px;
     color: #00ffcc;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
+    text-shadow: 0 0 5px black;
 }
