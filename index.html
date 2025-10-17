@@ -3,39 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Digital Speedometer (Simulasi)</title>
+    <title>Futuristic HUD Speedometer</title>
+    
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <div id="speedometer-container">
-        
+    <div id="hud-container">
+
         <div id="speed-display">
             <span id="speed-value">000</span>
-            <span id="speed-unit">KM/H</span>
+            <span id="speed-unit">MPH</span>
         </div>
 
-        <div id="rpm-display">
-            <span id="rpm-value">0000</span> RPM
+        <div id="info-section">
+            <div id="gear-box">
+                <span class="label">GEAR</span>
+                <span id="gear-value">N</span>
+            </div>
+            
+            <div id="rpm-bar-container">
+                <div id="rpm-bar-fill"></div>
+                <div id="rpm-bar-light"></div>
+            </div>
+
+            <div id="rpm-value-digital">
+                RPM: <span id="rpm-value">0.0</span>K
+            </div>
+        </div>
+
+        <div id="status-arc-container">
+            <svg viewBox="0 0 100 50">
+                <path id="status-arc-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(0, 255, 255, 0.1)" stroke-width="5"/>
+                <path id="status-arc-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#00FFFF" stroke-width="5" stroke-dasharray="0 125.66"/>
+                <text x="50" y="45" text-anchor="middle" class="arc-label">FUEL</text>
+            </svg>
+            <span id="fuel-value">100%</span>
         </div>
         
-        <div id="gear-indicator-box">
-            <span id="gear-value">N</span>
-            <div id="light-indicator"></div>
-        </div>
+    </div>
 
-        <div id="rpm-arc-container">
-            <svg width="200" height="100" viewBox="0 0 200 100">
-                <path id="rpm-arc-bg" d="M10 90 A90 90 0 0 1 190 90" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
-                <path id="rpm-arc-fill" d="M10 90 A90 90 0 0 1 190 90" fill="none" stroke="#00FFFF" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 565.48"/>
-            </svg>
-        </div>
-
-        <div id="sim-info-overlay">
-            Simulasi: 'A' Akselerasi, 'D' Deselerasi, 'L' Lampu
-        </div>
-
+    <div id="sim-info-overlay">
+        Tekan 'A' (Akselerasi) dan 'D' (Deselerasi)
     </div>
 
     <script src="script.js"></script>
