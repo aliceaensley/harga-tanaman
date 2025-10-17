@@ -1,33 +1,33 @@
 body {
   margin: 0;
-  overflow: hidden;
   background: transparent;
   font-family: "Poppins", sans-serif;
   color: white;
+  overflow: hidden;
 }
 
-/* ===== Mini Speedometer Container ===== */
-.speedometer-mini {
+/* === HUD Speedometer Position === */
+.hud-speedometer {
   position: fixed;
   bottom: 20px;
   right: 30px;
-  width: 180px;
-  height: 180px;
-  background: rgba(10, 10, 20, 0.6);
-  border: 2px solid rgba(0, 255, 255, 0.3);
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+  width: 160px;
+  height: 160px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
-/* ===== Circle + Needle ===== */
+/* === Circle === */
 .circle {
   position: relative;
-  width: 90%;
-  height: 90%;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(10, 20, 30, 0.4);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  overflow: hidden;
 }
 
 svg {
@@ -46,7 +46,7 @@ circle {
 }
 
 circle.bg {
-  stroke: rgba(255, 255, 255, 0.1);
+  stroke: rgba(255, 255, 255, 0.08);
 }
 
 circle.progress {
@@ -56,16 +56,17 @@ circle.progress {
   transition: stroke-dashoffset 0.3s ease;
 }
 
+/* === Needle === */
 .needle {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 2px;
-  height: 38%;
-  background: #ff0040;
+  height: 40%;
+  background: #ff1744;
   transform-origin: bottom center;
-  transform: rotate(0deg);
-  transition: transform 0.2s ease-out;
+  transform: translate(-50%, -100%) rotate(0deg);
+  transition: transform 0.15s ease-out;
 }
 
 .center {
@@ -74,15 +75,15 @@ circle.progress {
   left: 50%;
   width: 10px;
   height: 10px;
-  background: #fff;
+  background: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* ===== Speed Display ===== */
+/* === Speed Text === */
 .speed-display {
   position: absolute;
-  top: 65%;
+  top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
@@ -95,29 +96,23 @@ circle.progress {
 }
 
 .unit {
-  font-size: 0.8rem;
-  color: #bbb;
   display: block;
-  margin-top: -5px;
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-top: -3px;
 }
 
-/* ===== Extra Info (RPM, Fuel, Gear) ===== */
-.extra-info {
-  position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  font-size: 0.8rem;
+/* === Extra HUD Info === */
+.hud-info {
+  margin-top: 8px;
+  width: 100%;
   text-align: center;
-  color: #aef;
   display: flex;
   justify-content: space-between;
+  font-size: 0.75rem;
+  color: #bdefff;
 }
 
-.row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.hud-info .item {
   width: 33%;
 }
