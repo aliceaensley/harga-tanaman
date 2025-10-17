@@ -3,7 +3,7 @@
     --pixel-blue: #00FFFF;
     --pixel-red: #FF0099;
     --pixel-green: #00FF00;
-    --pixel-bg: rgba(0, 0, 0, 0.9);
+    --pixel-bg: rgba(0, 0, 0, 0.05); /* Transparan (5% Opacity Hitam) */
     --pixel-border-color: #00FFFF;
 }
 
@@ -27,16 +27,21 @@ body {
     right: 20px;
     width: 280px;
     padding: 10px;
-    background: var(--pixel-bg);
-    
-    /* Efek Pixelated Border */
-    border: 3px solid var(--pixel-border-color);
-    box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--pixel-border-color), 0 0 20px var(--pixel-blue);
-    
+
+    background: var(--pixel-bg); /* Menggunakan latar belakang transparan baru */
+
+    /* Hapus Border Kotak-Kotak Tebal untuk tampilan yang lebih bersih */
+    /* Hapus: border: 3px solid var(--pixel-border-color); */
+    /* Hapus: box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--pixel-border-color), 0 0 20px var(--pixel-blue); */
+
+    /* Ganti dengan shadow yang lebih tipis dan modern untuk kontras */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); 
+
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
+}
     
     /* Agar responsif, gunakan scale/zoom */
     transform-origin: bottom right;
@@ -75,20 +80,20 @@ body {
 
 /* --- Gear Display --- */
 #gear-display-pixel {
-    background-color: var(--pixel-red);
-    color: #000;
+    background-color: rgba(255, 0, 153, 0.1); /* Latar belakang merah muda semi-transparan */
+    color: var(--pixel-red); /* Warna teks gear kini merah */
     text-align: center;
     padding: 5px 0;
-    
-    /* Efek Pixelated Gear Box */
-    border: 3px solid var(--pixel-red);
-    box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--pixel-red);
+
+    /* Hapus border kotak-kotak gear yang solid */
+    border: 1px solid var(--pixel-red); /* Beri border tipis saja */
+    /* Hapus: box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--pixel-red); */
 }
 
 #gear-value-pixel {
     font-size: 26px;
-    text-shadow: none;
-    color: #000; /* Teks Hitam di Latar Merah */
+    text-shadow: 0 0 5px var(--pixel-red); /* Beri shadow agar lebih terlihat */
+    color: var(--pixel-red); 
 }
 
 /* --- Bottom Bar (Status & Lights) --- */
