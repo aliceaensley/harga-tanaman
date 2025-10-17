@@ -12,3 +12,13 @@ function setSpeed(speed) {
     }
 }
 
+// Ambil kecepatan kendaraan dari RageMP
+mp.events.add("render", () => {
+    let veh = mp.players.local.vehicle;
+    if (veh) {
+        let speed = veh.getSpeed() * 3.6; // km/h
+        Speedometer.setSpeed(speed);     // gunakan fungsi template asli
+    } else {
+        Speedometer.setSpeed(0);
+    }
+});
