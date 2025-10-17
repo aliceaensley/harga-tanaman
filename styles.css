@@ -1,11 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: transparent; /* agar overlay di game */
 }
 
 #speedoCanvas {
@@ -15,4 +11,5 @@ body {
     width: 300px;
     height: 300px;
     pointer-events: none;
+    z-index: 9999;
 }
