@@ -1,23 +1,19 @@
-// Fungsi untuk memperbarui nilai pada elemen
-function updateElement(id, value) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.textContent = value;
+mp.events.add("render", () => {
+    let veh = mp.players.local.vehicle;
+    if (veh) {
+        let speed = veh.getSpeed() * 3.6; // konversi m/s ke km/h
+        let gear = veh.getGear();
+        let fuel = veh.getFuelLevel();
+        let health = veh.getHealth();
+
+        updateElement('speedValue', speed.toFixed(0).padStart(3, '0'));
+        updateElement('gearValue', gear);
+        updateElement('fuelValue', fuel.toFixed(0));
+        updateElement('healthValue', health.toFixed(0));
+    } else {
+        updateElement('speedValue', '000');
+        updateElement('gearValue', 'N');
+        updateElement('fuelValue', '100');
+        updateElement('healthValue', '100');
     }
-}
-
-// Fungsi untuk mensimulasikan data
-function simulateData() {
-    let speed = Math.floor(Math.random() * 201); // 0 - 200 km/h
-    let gear = ['N', '1', '2', '3', '4', '5'][Math.floor(Math.random() * 6)];
-    let fuel = Math.floor(Math.random() * 101); // 0 - 100%
-    let health = Math.floor(Math.random() * 101); // 0 - 100%
-
-    updateElement('speedValue', speed.toString().padStart(3, '0'));
-    updateElement('gearValue', gear);
-    updateElement('fuelValue', fuel);
-    updateElement('healthValue', health);
-}
-
-// Update data setiap 1 detik
-setInterval(simulateData, 1000);
+});
