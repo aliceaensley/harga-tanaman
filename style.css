@@ -13,19 +13,6 @@
 body {
     background-color: none; /* BARIS INI YANG MEMBUAT LAYAR HITAM */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
-    color: var(--text-light);
-    overflow: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     margin: 0;
     padding: 0;
