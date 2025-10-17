@@ -1,15 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: transparent; /* agar overlay di game */
+    background-color: transparent; /* overlay di game */
 }
 
 #speedoCanvas {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    width: 300px;
-    height: 300px;
     pointer-events: none;
     z-index: 9999;
 }
