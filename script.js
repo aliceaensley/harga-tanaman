@@ -27,16 +27,13 @@ function updateHUD(data) {
     outerRingFillEl.style.transform = `rotate(${rotationDegrees}deg)`;
     
     // Logika pewarnaan RPM (Redline pada 7000 RPM)
-    if (rpmValue > 7000) {
-        outerRingFillEl.style.borderColor = '#ff5252'; // Danger Red
-        outerRingFillEl.style.filter = 'drop-shadow(0 0 8px #ff5252)';
-    } else if (rpmValue > 5000) {
-        outerRingFillEl.style.borderColor = '#FFC107'; // Warning Yellow
-        outerRingFillEl.style.filter = 'drop-shadow(0 0 6px #FFC107)';
-    } else {
-        outerRingFillEl.style.borderColor = '#00bcd4'; // Accent Blue
-        outerRingFillEl.style.filter = 'drop-shadow(0 0 7px #00bcd4)';
-    }
+    const rpmColor = 
+        rpmValue > 7000 ? '#ff5252' : // Danger Red
+        rpmValue > 5000 ? '#FFC107' : // Warning Yellow
+        '#00bcd4'; // Accent Blue
+        
+    outerRingFillEl.style.borderColor = rpmColor;
+    outerRingFillEl.style.filter = `drop-shadow(0 0 7px ${rpmColor})`;
 
     // 3. Gear Display
     // Asumsi: data.gear 0=Netral, 1+=Gigi
@@ -72,7 +69,7 @@ window.addEventListener('message', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('speedometer-container').style.display = 'none';
     
-    // Tambahkan kode untuk mengirim sinyal siap ke game jika diperlukan resource Anda.
+    // Opsional: Kirim sinyal NUI siap ke game
     /*
     if (typeof GetParentResourceName !== 'undefined') {
         fetch(`https://${GetParentResourceName()}/nuiReady`, {
