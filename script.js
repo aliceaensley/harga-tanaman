@@ -1,115 +1,49 @@
-// Script ini mensimulasikan data untuk HUD bergaya Pixel Retro
+const canvas = document.getElementById("gauge");
+const ctx = canvas.getContext("2d");
+const speedEl = document.getElementById("speed");
 
-const speedValueEl = document.getElementById('speed-value-pixel');
-const rpmValueEl = document.getElementById('rpm-value-pixel');
-const gearValueEl = document.getElementById('gear-value-pixel');
-const healthFillEl = document.getElementById('health-fill-pixel');
-const fuelFillEl = document.getElementById('fuel-fill-pixel');
-const lightIndicatorEl = document.getElementById('light-indicator-pixel');
+let speed = 0;
 
-// --- Konstan ---
-const MAX_SPEED = 180; // MPH
-const MAX_RPM = 8000;
+function drawGauge(speed) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-let currentSpeed = 0;
-let currentRPM = 0;
-let currentGear = 0; // 0 = Netral (N)
-let currentHealth = 100;
-let currentFuel = 100;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 110;
 
-// --- Logika Perhitungan ---
+    // Sudut 0.75π (135 derajat) hingga 0.25π (45 derajat)
+    const startAngle = 0.75 * Math.PI;
+    const endAngle = 0.25 * Math.PI;
 
-function updateRPM(speed, gear) {
-    if (speed === 0 || gear === 0) return 0;
-    
-    const RPM_BASE = 1500;
-    const RPM_FACTOR = 40;
-    const GEAR_MULTIPLIER = [0, 1.5, 1.0, 0.8, 0.6, 0.5]; 
+    // Background arc (busur abu-abu gelap)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle, false);
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 12;
+    ctx.stroke();
 
-    let calculatedRpm = RPM_BASE + (speed * RPM_FACTOR * GEAR_MULTIPLIER[gear]);
-    
-    return Math.min(MAX_RPM, Math.max(0, calculatedRpm));
+    // Speed arc (busur hijau yang mengisi)
+    const percent = speed / 200; // Asumsi kecepatan max = 200
+    // Menghitung sudut akhir berdasarkan persentase
+    const angle = startAngle + percent * (2 * Math.PI - (startAngle - endAngle));
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, startAngle, angle, false);
+    ctx.strokeStyle = '#00FF00';
+    ctx.lineWidth = 12;
+    ctx.stroke();
 }
 
-function updateHUD() {
-    // 1. Speed & Gear
-    const formattedSpeed = String(Math.floor(currentSpeed)).padStart(3, '0');
-    speedValueEl.textContent = formattedSpeed;
-    gearValueEl.textContent = currentGear === 0 ? 'N' : currentGear;
-
-    // 2. RPM (dikonversi ke Kilo RPM)
-    const rpmKilo = (currentRPM / 1000).toFixed(1);
-    rpmValueEl.textContent = rpmKilo;
-
-    // 3. Health Bar
-    healthFillEl.style.width = `${currentHealth}%`;
-    if (currentHealth < 25) {
-        healthFillEl.style.backgroundColor = '#FF0000'; // Merah saat low
-        healthFillEl.style.boxShadow = '0 0 5px #FF0000';
-    } else {
-        healthFillEl.style.backgroundColor = 'var(--pixel-green)';
-        healthFillEl.style.boxShadow = '0 0 5px var(--pixel-green)';
-    }
-
-    // 4. Fuel Bar
-    fuelFillEl.style.width = `${currentFuel}%`;
+function updateSpeedometer() {
+    // Simulasi perubahan kecepatan: bertambah 1 dan berputar kembali setelah mencapai 200
+    speed = (speed + 1) % 200; 
     
-    // 5. Lampu
-    if (lightIndicatorEl.classList.contains('active')) {
-        lightIndicatorEl.style.color = '#000';
-    } else {
-        lightIndicatorEl.style.color = '#000'; // Tetap hitam
-    }
+    speedEl.textContent = speed;
+    drawGauge(speed);
+    
+    // Menggunakan requestAnimationFrame untuk animasi yang lebih halus
+    requestAnimationFrame(updateSpeedometer);
 }
 
-// --- Logika Simulasi Interaktif ---
-
-const ACCEL_RATE = 4; 
-const DECEL_RATE = 2; 
-
-document.addEventListener('keydown', (event) => {
-    // Akselerasi (A)
-    if (event.key === 'a' || event.key === 'A') {
-        currentSpeed = Math.min(MAX_SPEED, currentSpeed + ACCEL_RATE);
-        if (currentSpeed > 0 && currentGear === 0) currentGear = 1;
-
-        if (currentRPM > 6000 && currentGear < 5) {
-            currentGear++;
-            currentRPM = 3500; 
-        }
-    } 
-    // Deselerasi (D)
-    else if (event.key === 'd' || event.key === 'D') {
-        currentSpeed = Math.max(0, currentSpeed - DECEL_RATE);
-        if (currentSpeed <= 0) currentGear = 0;
-        
-        if (currentRPM < 2500 && currentGear > 1) {
-            currentGear--;
-        }
-    }
-    // Health (H) - Mengurangi Health
-    else if (event.key === 'h' || event.key === 'H') {
-        currentHealth = Math.max(0, currentHealth - 10);
-        if (currentHealth === 0) currentHealth = 100; // Reset
-    }
-    // Lampu (L) - Toggle Lampu
-    else if (event.key === 'l' || event.key === 'L') {
-        lightIndicatorEl.classList.toggle('active');
-    }
-    
-    currentRPM = updateRPM(currentSpeed, currentGear);
-    
-    // Simulasi Pengurangan Fuel
-    if (Math.random() < 0.01) { 
-        currentFuel = Math.max(0, currentFuel - 0.1);
-    }
-
-    updateHUD(); 
-});
-
-
-// --- Start Simulasi ---
-document.addEventListener('DOMContentLoaded', () => {
-    setInterval(updateHUD, 50); 
-    updateHUD(); 
-});
+// Memulai loop animasi
+updateSpeedometer();
