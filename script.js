@@ -12,11 +12,3 @@ function setSpeed(speed) {
     }
 }
 
-// Contoh elemen HUD spedometer
-const container = document.getElementById('hud-speedometer');
-container.innerHTML = `
-<div id="speedometer">
-    <div id="speed-needle"></div>
-    <div id="speed-text">0 km/h</div>
-</div>
-`;
