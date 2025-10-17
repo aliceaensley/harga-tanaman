@@ -2,9 +2,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('speedoCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Ukuran tetap canvas agar speedometer selalu terlihat
-    canvas.width = 250;
-    canvas.height = 250;
+    function resizeCanvas() {
+        canvas.width = window.innerWidth * 0.2;
+        canvas.height = canvas.width;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     let speed = 0;
     let targetSpeed = 0;
@@ -39,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         // Jarum speed
-        speed += (targetSpeed-speed)*0.05; // smooth
+        speed += (targetSpeed-speed)*0.05;
         const angle = Math.PI + (speed/200)*Math.PI;
         const sx = cx + Math.cos(angle)*radius*0.9;
         const sy = cy + Math.sin(angle)*radius*0.9;
@@ -57,9 +60,8 @@ window.addEventListener('DOMContentLoaded', () => {
         ctx.fillText(Math.round(speed)+' km/h', cx, cy + canvas.width*0.2);
     }
 
-    // Dummy speed untuk demo
     function updateSpeed() {
-        targetSpeed = (Math.sin(Date.now()/1000)*100 + 100); // 0-200 km/h
+        targetSpeed = (Math.sin(Date.now()/1000)*100 + 100);
     }
 
     function loop() {
