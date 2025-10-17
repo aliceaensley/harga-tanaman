@@ -1,10 +1,11 @@
-// Script ini menggunakan logika simulasi dari versi sebelumnya,
-// namun hanya menargetkan elemen-elemen kecil.
+// Script ini mensimulasikan data untuk HUD bergaya Pixel Retro
 
-const speedValueEl = document.getElementById('speed-value-small');
-const gearValueEl = document.getElementById('gear-value-small');
-const rpmBarFillEl = document.getElementById('rpm-bar-fill-small');
-const fuelValueEl = document.getElementById('fuel-value-small');
+const speedValueEl = document.getElementById('speed-value-pixel');
+const rpmValueEl = document.getElementById('rpm-value-pixel');
+const gearValueEl = document.getElementById('gear-value-pixel');
+const healthFillEl = document.getElementById('health-fill-pixel');
+const fuelFillEl = document.getElementById('fuel-fill-pixel');
+const lightIndicatorEl = document.getElementById('light-indicator-pixel');
 
 // --- Konstan ---
 const MAX_SPEED = 180; // MPH
@@ -12,10 +13,11 @@ const MAX_RPM = 8000;
 
 let currentSpeed = 0;
 let currentRPM = 0;
-let currentGear = 0;
+let currentGear = 0; // 0 = Netral (N)
+let currentHealth = 100;
 let currentFuel = 100;
 
-// --- Logika Perhitungan (Dipertahankan) ---
+// --- Logika Perhitungan ---
 
 function updateRPM(speed, gear) {
     if (speed === 0 || gear === 0) return 0;
@@ -30,30 +32,34 @@ function updateRPM(speed, gear) {
 }
 
 function updateHUD() {
-    // 1. Kecepatan & Warna
+    // 1. Speed & Gear
     const formattedSpeed = String(Math.floor(currentSpeed)).padStart(3, '0');
     speedValueEl.textContent = formattedSpeed;
-
-    // Perubahan warna neon saat mendekati kecepatan max
-    if (currentSpeed > 150) {
-        speedValueEl.style.color = 'var(--neon-red)';
-        speedValueEl.style.textShadow = '0 0 15px var(--neon-red)';
-    } else {
-        speedValueEl.style.color = 'var(--neon-blue)';
-        speedValueEl.style.textShadow = '0 0 15px var(--neon-blue)';
-    }
-
-    // 2. RPM Bar
-    const rpmPercentage = currentRPM / MAX_RPM;
-    const rpmBarWidth = rpmPercentage * 100;
-
-    rpmBarFillEl.style.width = `${rpmBarWidth}%`;
-
-    // 3. Gear
     gearValueEl.textContent = currentGear === 0 ? 'N' : currentGear;
 
-    // 4. Fuel Status
-    fuelValueEl.textContent = `F: ${Math.floor(currentFuel)}`;
+    // 2. RPM (dikonversi ke Kilo RPM)
+    const rpmKilo = (currentRPM / 1000).toFixed(1);
+    rpmValueEl.textContent = rpmKilo;
+
+    // 3. Health Bar
+    healthFillEl.style.width = `${currentHealth}%`;
+    if (currentHealth < 25) {
+        healthFillEl.style.backgroundColor = '#FF0000'; // Merah saat low
+        healthFillEl.style.boxShadow = '0 0 5px #FF0000';
+    } else {
+        healthFillEl.style.backgroundColor = 'var(--pixel-green)';
+        healthFillEl.style.boxShadow = '0 0 5px var(--pixel-green)';
+    }
+
+    // 4. Fuel Bar
+    fuelFillEl.style.width = `${currentFuel}%`;
+    
+    // 5. Lampu
+    if (lightIndicatorEl.classList.contains('active')) {
+        lightIndicatorEl.style.color = '#000';
+    } else {
+        lightIndicatorEl.style.color = '#000'; // Tetap hitam
+    }
 }
 
 // --- Logika Simulasi Interaktif ---
@@ -80,6 +86,15 @@ document.addEventListener('keydown', (event) => {
         if (currentRPM < 2500 && currentGear > 1) {
             currentGear--;
         }
+    }
+    // Health (H) - Mengurangi Health
+    else if (event.key === 'h' || event.key === 'H') {
+        currentHealth = Math.max(0, currentHealth - 10);
+        if (currentHealth === 0) currentHealth = 100; // Reset
+    }
+    // Lampu (L) - Toggle Lampu
+    else if (event.key === 'l' || event.key === 'L') {
+        lightIndicatorEl.classList.toggle('active');
     }
     
     currentRPM = updateRPM(currentSpeed, currentGear);
