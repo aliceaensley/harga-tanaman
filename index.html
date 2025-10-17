@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JGVRP Speedometer</title>
+<title>JGVRP Speedometer HUD</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<!-- Container HUD untuk template -->
 <div id="hud-speedometer"></div>
-<script src="speedometer.js"></script> <!-- dari template GitHub -->
-<script>
-    // Contoh penggunaan template
-    setSpeedMode(0); // 0 = KMH
-    setSpeed(0);     // kecepatan awal
-</script>
+
+<!-- Sertakan file JS asli template -->
+<script src="speedometer.js"></script>
+<script src="speedometer-rmp.js"></script> <!-- JS custom untuk RageMP -->
 </body>
 </html>
