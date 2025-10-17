@@ -5,9 +5,10 @@ body {
 }
 
 #speedoCanvas {
-    position: fixed;   /* tetap di pojok kanan bawah */
-    bottom: 20px;
-    right: 20px;
+    position: absolute; /* default di tengah bisa pakai top/left jika ingin */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 9999;
 }
