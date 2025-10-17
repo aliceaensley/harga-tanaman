@@ -1,59 +1,27 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Retro Speedometer</title>
-    
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Speedometer</title>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
+
+<div id="speedometer">
+    <canvas id="gauge" width="250" height="250"></canvas> 
     
-    <div id="pixel-hud-container">
-        
-        <div id="top-grid">
-            <div class="info-item">
-                <span class="label">SPEED</span>
-                <span id="speed-value-pixel" class="value">000</span>
-                <span class="unit">MPH</span>
-            </div>
-            <div class="info-item">
-                <span class="label">RPM</span>
-                <span id="rpm-value-pixel" class="value">0.0</span>
-                <span class="unit">K</span>
-            </div>
-        </div>
-
-        <div id="gear-display-pixel">
-            <span id="gear-value-pixel">N</span>
-        </div>
-
-        <div id="bottom-bar">
-            
-            <div class="status-box">
-                <span class="label">HEALTH</span>
-                <div id="health-bar-pixel" class="bar-container">
-                    <div id="health-fill-pixel" class="bar-fill"></div>
-                </div>
-            </div>
-
-            <div class="status-box">
-                <span class="label">FUEL</span>
-                <div id="fuel-bar-pixel" class="bar-container">
-                    <div id="fuel-fill-pixel" class="bar-fill"></div>
-                </div>
-            </div>
-            
-            <div id="light-indicator-pixel" class="indicator-icon-pixel">L</div>
-        </div>
-
+    <div id="speed">0</div> 
+    
+    <div id="unit">MPH</div> 
+    
+    <div class="bar-container">
+        <div class="bar" id="bar1"></div>
+        <div class="bar" id="bar2"></div>
+        <div class="bar" id="bar3"></div>
     </div>
+</div>
 
-    <div id="sim-info-overlay">
-        Tekan 'A' (Akselerasi), 'D' (Deselerasi), 'H' (Health), 'L' (Lampu)
-    </div>
+<script src="script.js"></script> 
 
-    <script src="script.js"></script>
 </body>
 </html>
