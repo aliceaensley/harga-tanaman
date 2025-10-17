@@ -11,7 +11,7 @@
 }
 
 body {
-    background-color: #0d0d0d; /* Latar belakang gelap untuk kontras */
+    background-color: #0d0d0d; /* BARIS INI YANG MEMBUAT LAYAR HITAM */
     display: flex;
     justify-content: center;
     align-items: center;
