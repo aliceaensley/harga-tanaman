@@ -1,23 +1,16 @@
-// Fungsi dari template jgvrp-speedometer-template
-function setSpeed(speed) {
-    // speed dalam m/s, dikonversi ke km/h
-    const kmh = speed * 3.6;
-    const speedText = document.getElementById('speed-text');
-    if(speedText) speedText.innerText = Math.round(kmh) + " km/h";
+// Pastikan Speedometer.js sudah ter-include
+// Inisialisasi speedometer di container
+document.addEventListener("DOMContentLoaded", () => {
+    Speedometer.init('hud-speedometer'); // fungsi bawaan template
+    Speedometer.setSpeed(0); // kecepatan awal
+});
 
-    const needle = document.getElementById('speed-needle');
-    if(needle) {
-        const rotation = Math.min(kmh, 200) / 200 * 180;
-        needle.style.transform = `rotate(${rotation}deg)`;
-    }
-}
-
-// Ambil kecepatan kendaraan dari RageMP
+// Update spedometer tiap frame RageMP
 mp.events.add("render", () => {
     let veh = mp.players.local.vehicle;
     if (veh) {
-        let speed = veh.getSpeed() * 3.6; // km/h
-        Speedometer.setSpeed(speed);     // gunakan fungsi template asli
+        let speed = veh.getSpeed() * 3.6; // konversi m/s -> km/h
+        Speedometer.setSpeed(speed);     // fungsi template asli
     } else {
         Speedometer.setSpeed(0);
     }
