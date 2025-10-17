@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const speedText = document.getElementById("speed");
   const rpmText = document.getElementById("rpm");
   const fuelText = document.getElementById("fuel");
-  const healthText = document.getElementById("health");
   const gearText = document.getElementById("gear");
   const unitText = document.getElementById("unit");
 
@@ -28,10 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fuelText.textContent = `${Math.round(value * 100)}%`;
   };
 
-  const setHealth = (value) => {
-    healthText.textContent = `${Math.round(value * 100)}%`;
-  };
-
   const setGear = (gear) => {
     gearText.textContent = gear;
   };
@@ -42,14 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     unitText.textContent = units[mode] || "KM/H";
   };
 
-  // === DEMO (hapus saat integrasi ke game) ===
+  // === DEMO ANIMASI OTOMATIS ===
   let demoSpeed = 0;
   setInterval(() => {
-    demoSpeed = (demoSpeed + 5) % 240;
+    demoSpeed = (demoSpeed + 8) % 240;
     setSpeed(demoSpeed);
     setRPM(Math.random() * 8);
     setFuel(Math.random());
-    setHealth(Math.random());
     setGear(["R", "N", "1", "2", "3", "4", "5"][Math.floor(Math.random() * 7)]);
   }, 500);
 });
