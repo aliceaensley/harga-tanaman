@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #111; /* agar terlihat di test browser */
+    background-color: #111; /* supaya speedometer terlihat */
 }
 
 #speedoCanvas {
