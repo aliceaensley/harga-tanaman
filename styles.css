@@ -1,14 +1,102 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #111;
+    background: transparent;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
 }
 
-#speedoCanvas {
-    position: absolute; /* default di tengah bisa pakai top/left jika ingin */
+#speedometer-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 250px; /* Ukuran speedometer */
+    height: 250px;
+    transition: opacity 0.3s;
+}
+
+#speedometer-container.hidden {
+    display: none;
+}
+
+#speedometer-dial {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* Gaya Retro: Latar belakang gelap, sedikit tekstur */
+    background: radial-gradient(circle at center, #333 0%, #111 100%);
+    border: 8px solid #555;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+/* --- Jarum Speedometer --- */
+#center-pin {
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 9999;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #F44336; /* Merah Retro */
+    z-index: 100;
+}
+
+#speed-needle {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width: 4px;
+    height: 48%; /* Panjang jarum */
+    transform-origin: bottom center;
+    background-color: #F44336; /* Merah Jarum */
+    z-index: 90;
+    
+    /* Jarum dimulai dari sudut 135 derajat (posisi 0) */
+    transform: translateX(-50%) rotate(135deg);
+    transition: transform 0.1s linear; /* Transisi halus */
+    border-radius: 2px 2px 0 0;
+}
+
+/* --- Angka Skala --- */
+#speed-numbers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: #FFC107; /* Kuning/Oranye hangat khas Retro */
+    font-size: 0.9em;
+}
+
+.mark {
+    position: absolute;
+    transform-origin: 50% 100%;
+}
+
+/* Penempatan Angka pada Lingkaran (135 derajat hingga 45 derajat) */
+.mark-0 { bottom: 10%; left: 10%; transform: rotate(135deg); }
+.mark-40 { top: 30%; left: 0%; transform: rotate(180deg) translateX(50%); } /* Samping kiri */
+.mark-80 { top: 10%; left: 20%; transform: rotate(225deg); }
+.mark-120 { top: 0; left: 50%; transform: translate(-50%, 0); } /* Atas tengah */
+.mark-160 { top: 10%; right: 20%; transform: rotate(-45deg); } /* atau rotate(315deg) */
+.mark-200 { bottom: 10%; right: 10%; transform: rotate(-135deg); } /* atau rotate(45deg) */
+
+
+/* --- Digital Display (Odometer) --- */
+#digital-display {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #222; /* Latar belakang gelap untuk digital */
+    border: 1px solid #444;
+    border-radius: 3px;
+    color: #00FF00; /* Warna Hijau Digital Khas Retro */
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+}
+
+#speed-value {
+    font-weight: bold;
 }
