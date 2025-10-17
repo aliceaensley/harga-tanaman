@@ -5,3 +5,8 @@
     width: 220px;
     height: 220px;
 }
+#hud-speedometer {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
