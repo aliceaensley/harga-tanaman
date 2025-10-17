@@ -1,65 +1,172 @@
+/* --- Global & Variables --- */
+:root {
+    --main-bg-dark: #1a1a1a;
+    --secondary-bg-dark: #2c2c2c;
+    --accent-blue: #00bcd4; /* Cyan */
+    --text-light: #f0f0f0;
+    --text-muted: #888;
+    --danger-red: #ff5252;
+    --success-green: #4CAF50;
+    --warning-yellow: #FFC107;
+}
+
 body {
-    background: #000;
+    background-color: #0d0d0d; /* Latar belakang gelap untuk kontras */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-light);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-#speedometer {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: #1b1b1b;
+/* --- Speedometer Container --- */
+#speedometer-container {
     position: relative;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-#speed {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 40px;
-    font-family: sans-serif;
-    color: white;
-}
-
-#unit {
-    position: absolute;
-    top: 65%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 16px;
-    font-family: sans-serif;
-    color: gray;
-}
-
-.bar-container {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 320px;
+    height: 320px;
+    background: var(--main-bg-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
     display: flex;
-    gap: 6px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Penting untuk ring luar */
 }
 
-.bar {
-    width: 20px;
-    height: 6px;
-    border-radius: 4px;
-    /* Warna default untuk bar, dipindahkan dari style inline */
-    background-color: green; 
-}
-
-/* Mengubah id bar agar warnanya bisa berbeda (opsional) */
-#bar1 { background: #00FF00; }
-#bar2 { background: #00FF00; }
-#bar3 { background: #00FF00; }
-
-canvas {
+/* --- Outer Ring (RPM/Power) --- */
+#outer-ring-bg {
     position: absolute;
-    top: 0;
-    left: 0;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    border-radius: 50%;
+    border: 8px solid var(--secondary-bg-dark);
+    box-sizing: border-box;
+}
+
+#outer-ring-fill {
+    position: absolute;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    border-radius: 50%;
+    border: 8px solid transparent; /* Awalnya transparan */
+    border-top-color: var(--accent-blue); /* Mulai dengan warna aksen */
+    border-right-color: var(--accent-blue);
+    transform: rotate(45deg); /* Putar agar top-right menjadi awal */
+    box-sizing: border-box;
+    transition: transform 0.1s linear; /* Animasi halus */
+    filter: drop-shadow(0 0 5px var(--accent-blue)); /* Efek glow */
+}
+
+/* --- Center Display (Speed) --- */
+#center-display {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    margin-top: -30px; /* Geser sedikit ke atas agar seimbang */
+}
+
+#speed-value {
+    font-family: 'Aldrich', sans-serif;
+    font-size: 5.5em;
+    font-weight: bold;
+    color: var(--text-light);
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(0, 188, 212, 0.7);
+}
+
+#speed-unit {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+/* --- Gear Display --- */
+#gear-display {
+    position: absolute;
+    top: 20%; /* Posisikan di atas speed */
+    background: var(--secondary-bg-dark);
+    padding: 5px 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#gear-display .label {
+    font-size: 0.7em;
+    color: var(--text-muted);
+}
+
+#gear-value {
+    font-family: 'Aldrich', sans-serif;
+    font-size: 2.2em;
+    font-weight: bold;
+    color: var(--warning-yellow); /* Kuning untuk Gear */
+    text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+}
+
+/* --- Bottom Status (Fuel & Health) --- */
+#bottom-status {
+    position: absolute;
+    bottom: 20px;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.status-item {
+    width: 45%;
+    text-align: center;
+}
+
+.status-item .label {
+    font-size: 0.7em;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.bar-bg {
+    width: 100%;
+    height: 8px;
+    background-color: var(--secondary-bg-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 100%; /* Default */
+    border-radius: 4px;
+    transition: width 0.3s ease-out, background-color 0.3s;
+}
+
+#fuel-bar-fill {
+    background-color: var(--success-green);
+}
+
+#health-bar-fill {
+    background-color: var(--success-green);
+}
+
+/* --- Simulation Info Overlay --- */
+#sim-info-overlay {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    padding: 8px 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #00FF00;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75em;
+    border-top-left-radius: 5px;
 }
