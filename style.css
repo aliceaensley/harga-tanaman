@@ -1,172 +1,65 @@
-/* --- Variabel & Global --- */
-:root {
-    --pixel-blue: #00FFFF;
-    --pixel-red: #FF0099;
-    --pixel-green: #00FF00;
-    --pixel-bg: rgba(0, 0, 0, 0.05); /* Transparan (5% Opacity Hitam) */
-    --pixel-border-color: #00FFFF;
-}
-
 body {
-    background-color: transparent; /* Sekarang transparan */
-    
-    /* Mengatur body agar menempati seluruh viewport */
+    background: #000;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    
-    /* Properti lain (tetap sama) */
-    font-family: 'Press Start 2P', cursive;
-    color: var(--pixel-blue);
-    overflow: hidden;
-}
-
-/* --- Container Utama --- */
-#pixel-hud-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 280px;
-    padding: 10px;
-
-    background: var(--pixel-bg); /* Menggunakan latar belakang transparan baru */
-
-    /* Hapus Border Kotak-Kotak Tebal untuk tampilan yang lebih bersih */
-    /* Hapus: border: 3px solid var(--pixel-border-color); */
-    /* Hapus: box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--pixel-border-color), 0 0 20px var(--pixel-blue); */
-
-    /* Ganti dengan shadow yang lebih tipis dan modern untuk kontras */
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); 
-
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-}
-    
-    /* Agar responsif, gunakan scale/zoom */
-    transform-origin: bottom right;
-    /* transform: scale(0.9); */ /* Uncomment jika Anda ingin benar-benar kecil */
-}
-
-/* --- Top Grid (Speed & RPM) --- */
-#top-grid {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-}
-
-.info-item {
-    padding: 5px;
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    width: 48%;
-}
-
-.label {
-    font-size: 8px;
-    color: rgba(255, 255, 255, 0.6);
-    display: block;
-    margin-bottom: 2px;
-}
-
-.value {
-    font-size: 16px;
-    text-shadow: 0 0 5px var(--pixel-blue);
-}
-
-.unit {
-    font-size: 8px;
-    margin-left: 5px;
-}
-
-/* --- Gear Display --- */
-#gear-display-pixel {
-    background-color: rgba(255, 0, 153, 0.1); /* Latar belakang merah muda semi-transparan */
-    color: var(--pixel-red); /* Warna teks gear kini merah */
-    text-align: center;
-    padding: 5px 0;
-
-    /* Hapus border kotak-kotak gear yang solid */
-    border: 1px solid var(--pixel-red); /* Beri border tipis saja */
-    /* Hapus: box-shadow: 0 0 0 3px #000, 0 0 0 6px var(--pixel-red); */
-}
-
-#gear-value-pixel {
-    font-size: 26px;
-    text-shadow: 0 0 5px var(--pixel-red); /* Beri shadow agar lebih terlihat */
-    color: var(--pixel-red); 
-}
-
-/* --- Bottom Bar (Status & Lights) --- */
-#bottom-bar {
-    display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 5px 0;
+    height: 100vh;
+    margin: 0;
 }
 
-.status-box {
-    width: 40%;
+#speedometer {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #1b1b1b;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#speed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    font-family: sans-serif;
+    color: white;
+}
+
+#unit {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-family: sans-serif;
+    color: gray;
 }
 
 .bar-container {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+}
+
+.bar {
+    width: 20px;
     height: 6px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-top: 2px;
+    border-radius: 4px;
+    /* Warna default untuk bar, dipindahkan dari style inline */
+    background-color: green; 
 }
 
-.bar-fill {
-    height: 100%;
-    width: 100%; /* Default */
-    transition: width 0.3s linear;
-}
+/* Mengubah id bar agar warnanya bisa berbeda (opsional) */
+#bar1 { background: #00FF00; }
+#bar2 { background: #00FF00; }
+#bar3 { background: #00FF00; }
 
-/* Warna Bar */
-#health-fill-pixel {
-    background-color: var(--pixel-green);
-    box-shadow: 0 0 5px var(--pixel-green);
-}
-
-#fuel-fill-pixel {
-    background-color: #FFD700;
-    box-shadow: 0 0 5px #FFD700;
-}
-
-/* Lampu Indikator */
-.indicator-icon-pixel {
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-    text-align: center;
-    font-size: 10px;
-    color: #000;
-    background-color: rgba(255, 255, 255, 0.3);
-    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-    
-    /* Border Pixelated Kecil */
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0 1px #000, 0 0 0 2px rgba(255, 255, 255, 0.8);
-}
-
-#light-indicator-pixel.active {
-    background-color: var(--pixel-green);
-    color: #000;
-    box-shadow: 0 0 5px var(--pixel-green);
-}
-
-/* --- Overlay Debug --- */
-#sim-info-overlay {
-    position: fixed;
-    bottom: 0px;
-    right: 20px;
-    padding: 5px 10px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #00FF00;
-    font-family: Arial, sans-serif;
-    font-size: 0.75em;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
