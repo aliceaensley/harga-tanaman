@@ -3,16 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUD Spedometer RageMP</title>
+<title>HUD Spedometer Lengkap RageMP</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="hud-speedometer" id="speedometer">
+<!-- Spedometer besar utama -->
+<div class="hud-speedometer" id="speedometerMain">
     <div class="dial">
-        <div class="needle" id="needle"></div>
+        <div class="needle" id="needleMain"></div>
     </div>
-    <div class="speed-text" id="speedText">0 km/h</div>
+    <div class="speed-text" id="speedTextMain">0 km/h</div>
+</div>
+
+<!-- Spedometer mini tambahan -->
+<div class="hud-speedometer-mini" id="speedometerMini">
+    <div class="dial">
+        <div class="needle" id="needleMini"></div>
+    </div>
+    <div class="speed-text" id="speedTextMini">0 km/h</div>
 </div>
 
 <script src="spedometer.js"></script>
