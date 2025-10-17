@@ -4,14 +4,13 @@ mp.events.add("render", () => {
     let speed = 0;
 
     if (playerVeh) {
-        // Kecepatan kendaraan dalam km/h
-        speed = playerVeh.getSpeed() * 3.6;
+        speed = playerVeh.getSpeed() * 3.6; // km/h
     }
 
-    // Update teks
+    // Update teks kecepatan
     document.getElementById("speedText").innerText = Math.round(speed) + " km/h";
 
     // Update jarum (0-200 km/h => 0-180 derajat)
-    let needleDeg = Math.min(speed, 200) / 200 * 180; 
+    let needleDeg = Math.min(speed, 200) / 200 * 180;
     document.getElementById("needle").style.transform = `rotate(${needleDeg}deg)`;
 });
