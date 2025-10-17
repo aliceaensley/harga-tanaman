@@ -1,115 +1,118 @@
-// Script ini mensimulasikan data HUD agar dapat dilihat di browser
+// Script ini mensimulasikan data agar speedometer sangat responsif di browser
 
 const speedValueEl = document.getElementById('speed-value');
-const speedUnitEl = document.getElementById('speed-unit'); // Menambahkan ini
-const rpmValueEl = document.getElementById('rpm-value');
 const gearValueEl = document.getElementById('gear-value');
-const lightIndicatorEl = document.getElementById('light-indicator');
-const rpmArcFillEl = document.getElementById('rpm-arc-fill');
+const rpmBarFillEl = document.getElementById('rpm-bar-fill');
+const rpmDigitalEl = document.getElementById('rpm-value');
+const statusArcFillEl = document.getElementById('status-arc-fill');
+const fuelValueEl = document.getElementById('fuel-value');
+
+// --- Konstan ---
+const MAX_SPEED = 180; // MPH
+const MAX_RPM = 8000;
+const ARC_LENGTH = 125.66; // Panjang total busur (2 * PI * r) / 2 = 125.66 (radius 40)
 
 let currentSpeed = 0;
 let currentRPM = 0;
-let currentGear = 0; // 0 = Netral (N)
-let isLightsOn = false;
+let currentGear = 0;
+let currentFuel = 100;
 
-const MAX_SPEED = 200; // KM/H
-const MAX_RPM = 8000;
+// --- Logika Perhitungan ---
 
-// Path length of the RPM arc (from SVG 'd' attribute, roughly)
-// d="M10 90 A90 90 0 0 1 190 90" => ini adalah setengah lingkaran dengan radius 90
-// Keliling setengah lingkaran = pi * radius = 3.14159 * 90 = 282.74
-// Tapi karena SVG dirotateY, dan start/end point, kita perlu nilai yang lebih akurat
-// Untuk 90 derajat busur, panjangnya sekitar 1.57 * radius
-// Untuk 180 derajat busur (setengah lingkaran), panjangnya sekitar 3.14159 * radius
-// Di sini kita memiliki busur 180 derajat
-const RPM_ARC_LENGTH = Math.PI * 90; // Lingkar setengah lingkaran radius 90
+function updateRPM(speed, gear) {
+    if (speed === 0 || gear === 0) return 0;
+    
+    // Model Sederhana: RPM = (Basis + (Speed * Faktor)) * Multiplier Gear
+    const RPM_BASE = 1500;
+    const RPM_FACTOR = 40;
+    const GEAR_MULTIPLIER = [0, 1.5, 1.0, 0.8, 0.6, 0.5]; // Multiplier rendah untuk gigi tinggi
 
-// --- Fungsi Update Tampilan ---
+    let calculatedRpm = RPM_BASE + (speed * RPM_FACTOR * GEAR_MULTIPLIER[gear]);
+    
+    return Math.min(MAX_RPM, Math.max(0, calculatedRpm));
+}
 
 function updateHUD() {
-    // Speed
+    // 1. Kecepatan & Warna
     const formattedSpeed = String(Math.floor(currentSpeed)).padStart(3, '0');
     speedValueEl.textContent = formattedSpeed;
 
-    // RPM
-    const formattedRPM = String(Math.floor(currentRPM)).padStart(4, '0');
-    rpmValueEl.textContent = formattedRPM;
-
-    // Gear
-    gearValueEl.textContent = currentGear === 0 ? 'N' : currentGear;
-
-    // Lights
-    if (isLightsOn) {
-        lightIndicatorEl.classList.add('active');
+    // Perubahan warna neon saat mendekati kecepatan max
+    if (currentSpeed > 150) {
+        speedValueEl.style.color = 'var(--neon-red)';
+        speedValueEl.style.textShadow = '0 0 20px var(--neon-red)';
     } else {
-        lightIndicatorEl.classList.remove('active');
+        speedValueEl.style.color = 'var(--neon-blue)';
+        speedValueEl.style.textShadow = '0 0 20px var(--neon-blue)';
     }
 
-    // RPM Arc
+    // 2. RPM Bar
     const rpmPercentage = currentRPM / MAX_RPM;
-    // Stroke-dasharray: 'panjang garis terlihat' 'panjang garis tidak terlihat'
-    // Kita ingin mengisi dari kiri ke kanan (yang sebenarnya dari 0% ke 100% dari total panjang busur)
-    const dashLength = RPM_ARC_LENGTH * rpmPercentage;
-    rpmArcFillEl.style.strokeDasharray = `${dashLength} ${RPM_ARC_LENGTH - dashLength}`;
+    const rpmBarWidth = rpmPercentage * 100;
+
+    rpmBarFillEl.style.width = `${rpmBarWidth}%`;
+    rpmDigitalEl.textContent = `${(currentRPM / 1000).toFixed(1)}K`;
+
+    // 3. Gear
+    gearValueEl.textContent = currentGear === 0 ? 'N' : currentGear;
+
+    // 4. Fuel Arc
+    const fuelPercentage = currentFuel / 100;
+    
+    // Stroke-dashoffset adalah offset dari awal garis (0% = tidak ada offset)
+    const dashOffset = ARC_LENGTH * (1 - fuelPercentage);
+    statusArcFillEl.style.strokeDashoffset = dashOffset;
+    
+    fuelValueEl.textContent = `${Math.floor(currentFuel)}%`;
 }
 
 // --- Logika Simulasi Interaktif ---
 
-const ACCELERATION_RATE = 2; // KM/H per tick
-const DECELERATION_RATE = 1.5; // KM/H per tick
-const MAX_SIMULATION_SPEED = 180; // KM/H
-
-// Fungsi untuk menghitung RPM berdasarkan kecepatan dan gigi
-function calculateRPM(speed, gear) {
-    if (speed === 0 || gear === 0) return 0;
-    // Ini adalah model yang sangat disederhanakan
-    const rpmBase = 1500; // RPM dasar saat bergerak
-    const rpmPerSpeedUnit = 50;
-    const gearFactor = [0, 1.2, 0.9, 0.7, 0.5, 0.4]; // Faktor untuk setiap gigi
-
-    let calculatedRpm = rpmBase + (speed * rpmPerSpeedUnit * gearFactor[gear]);
-    return Math.min(MAX_RPM, Math.max(0, Math.floor(calculatedRpm)));
-}
+const ACCEL_RATE = 4; 
+const DECEL_RATE = 2; 
 
 document.addEventListener('keydown', (event) => {
-    // Accelerate (A)
+    // Akselerasi (A)
     if (event.key === 'a' || event.key === 'A') {
-        currentSpeed = Math.min(MAX_SIMULATION_SPEED, currentSpeed + ACCELERATION_RATE);
-        if (currentSpeed > 0 && currentGear === 0) currentGear = 1; // Masuk gigi 1
-        
-        // Simulasikan perpindahan gigi otomatis
-        if (currentSpeed > 20 && currentGear === 1 && currentRPM > 6000) currentGear = 2;
-        if (currentSpeed > 50 && currentGear === 2 && currentRPM > 6000) currentGear = 3;
-        if (currentSpeed > 80 && currentGear === 3 && currentRPM > 6000) currentGear = 4;
-        if (currentSpeed > 120 && currentGear === 4 && currentRPM > 6000) currentGear = 5;
+        currentSpeed = Math.min(MAX_SPEED, currentSpeed + ACCEL_RATE);
+        if (currentSpeed > 0 && currentGear === 0) currentGear = 1;
 
+        // Simulasi pindah gigi naik saat RPM tinggi
+        if (currentRPM > 6000 && currentGear < 5) {
+            currentGear++;
+            currentRPM = 3500; // Drop RPM saat pindah gigi
+        }
     } 
-    // Decelerate (D)
+    // Deselerasi (D)
     else if (event.key === 'd' || event.key === 'D') {
-        currentSpeed = Math.max(0, currentSpeed - DECELERATION_RATE);
-        if (currentSpeed <= 0) currentGear = 0; // Netral saat berhenti
+        currentSpeed = Math.max(0, currentSpeed - DECEL_RATE);
+        if (currentSpeed <= 0) currentGear = 0;
         
-        // Simulasikan perpindahan gigi otomatis (turun)
-        if (currentSpeed < 100 && currentGear === 5) currentGear = 4;
-        if (currentSpeed < 70 && currentGear === 4) currentGear = 3;
-        if (currentSpeed < 40 && currentGear === 3) currentGear = 2;
-        if (currentSpeed < 15 && currentGear === 2) currentGear = 1;
-    }
-    // Toggle Lights (L)
-    else if (event.key === 'l' || event.key === 'L') {
-        isLightsOn = !isLightsOn;
+        // Simulasi pindah gigi turun saat RPM rendah
+        if (currentRPM < 2500 && currentGear > 1) {
+            currentGear--;
+        }
     }
     
-    currentRPM = calculateRPM(currentSpeed, currentGear);
+    // Perbarui RPM
+    currentRPM = updateRPM(currentSpeed, currentGear);
+    
+    // Simulasi Pengurangan Fuel (lambat)
+    if (Math.random() < 0.01) { // 1% kemungkinan per tick
+        currentFuel = Math.max(0, currentFuel - 0.1);
+    }
+
     updateHUD(); 
 });
 
 
 // --- Start Simulasi ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Panggil updateHUD secara berkala (misal, 50ms untuk responsif)
+    // Jalankan update HUD setiap 50ms untuk tampilan yang sangat responsif
     setInterval(updateHUD, 50); 
     
-    // Inisialisasi tampilan awal
+    // Atur offset awal untuk Fuel Arc
+    statusArcFillEl.style.strokeDashoffset = '0';
+    
     updateHUD(); 
 });
