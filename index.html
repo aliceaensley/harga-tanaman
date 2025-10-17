@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Retro Speedometer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speedometer Analog Retro (Simulasi)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="speedometer-container" class="hidden">
+    <div id="speedometer-container">
+        
         <div id="speedometer-dial">
+            
             <div id="speed-numbers">
                 <span class="mark mark-0">0</span>
                 <span class="mark mark-40">40</span>
@@ -23,6 +27,8 @@
                 <span id="speed-value">000</span> KM/H
             </div>
         </div>
+        
+        <div id="sim-info">Simulasi Aktif (Akselerasi/Deselerasi)</div>
     </div>
 
     <script src="script.js"></script>
