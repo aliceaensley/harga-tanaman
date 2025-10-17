@@ -9,32 +9,30 @@ const MAX_SPEED = 240; // KM/H
 const MAX_RPM_ANGLE = 270; // Derajat putaran maksimum untuk ring luar (3/4 lingkaran)
 
 let currentSpeed = 0;
-let currentRPM = 0; // RPM akan mempengaruhi ring luar
-let currentGear = 0; // 0 = Netral (N)
-let currentFuel = 100; // Persentase
-let currentHealth = 100; // Persentase
+let currentRPM = 0; 
+let currentGear = 0; 
+let currentFuel = 100; 
+let currentHealth = 100; 
 
 // --- Logika Perhitungan ---
 
-// Fungsi sederhana untuk mengkonversi kecepatan & gear ke RPM
 function calculateRPM(speed, gear) {
     if (speed === 0 || gear === 0) return 0;
     const RPM_BASE = 1000;
-    const RPM_FACTOR = 30; // Seberapa cepat RPM naik per unit kecepatan
-    const GEAR_MULTIPLIER = [0, 1.8, 1.2, 0.9, 0.7, 0.6, 0.5]; // Faktor untuk setiap gigi
+    const RPM_FACTOR = 30; 
+    const GEAR_MULTIPLIER = [0, 1.8, 1.2, 0.9, 0.7, 0.6, 0.5]; 
 
     let calculatedRpm = RPM_BASE + (speed * RPM_FACTOR * GEAR_MULTIPLIER[gear]);
-    return Math.min(8000, Math.max(0, calculatedRpm)); // Batasi RPM max 8000
+    return Math.min(8000, Math.max(0, calculatedRpm)); 
 }
 
-// Fungsi untuk memperbarui semua elemen HUD
 function updateHUD() {
     // 1. Kecepatan Digital
     const formattedSpeed = String(Math.floor(currentSpeed)).padStart(3, '0');
     speedValueEl.textContent = formattedSpeed;
 
     // 2. Outer Ring (RPM Indicator)
-    const rpmPercentage = currentRPM / 8000; // RPM max 8000
+    const rpmPercentage = currentRPM / 8000; 
     // Putaran dimulai dari 45 derajat (posisi kanan atas), total 270 derajat
     const rotationDegrees = 45 + (rpmPercentage * MAX_RPM_ANGLE);
     outerRingFillEl.style.transform = `rotate(${rotationDegrees}deg)`;
@@ -49,7 +47,7 @@ function updateHUD() {
     }
     else {
         outerRingFillEl.style.borderColor = 'var(--accent-blue)';
-        outerRingFillEl.style.filter = 'drop-shadow(0 0 5px var(--accent-blue))';
+        outerRingFillEl.style.filter = 'drop-shadow(0 0 7px var(--accent-blue))';
     }
 
     // 3. Gear Display
@@ -78,8 +76,8 @@ function updateHUD() {
 
 // --- Logika Simulasi Interaktif ---
 
-const ACCEL_RATE = 3; // KM/H per tick
-const DECEL_RATE = 2; // KM/H per tick
+const ACCEL_RATE = 3; 
+const DECEL_RATE = 2; 
 
 document.addEventListener('keydown', (event) => {
     // Akselerasi (A)
@@ -87,10 +85,9 @@ document.addEventListener('keydown', (event) => {
         currentSpeed = Math.min(MAX_SPEED, currentSpeed + ACCEL_RATE);
         if (currentSpeed > 0 && currentGear === 0) currentGear = 1;
 
-        // Simulasi pindah gigi naik
-        if (currentRPM > 6500 && currentGear < 6) { // Max gear 6
+        if (currentRPM > 6500 && currentGear < 6) { 
             currentGear++;
-            currentRPM = 3000; // Reset RPM saat pindah gigi
+            currentRPM = 3000; 
         }
     } 
     // Deselerasi (D)
@@ -98,7 +95,6 @@ document.addEventListener('keydown', (event) => {
         currentSpeed = Math.max(0, currentSpeed - DECEL_RATE);
         if (currentSpeed <= 0) currentGear = 0;
         
-        // Simulasi pindah gigi turun
         if (currentRPM < 2000 && currentGear > 1) {
             currentGear--;
         }
@@ -106,19 +102,18 @@ document.addEventListener('keydown', (event) => {
     // Kurangi Health (H)
     else if (event.key === 'h' || event.key === 'H') {
         currentHealth = Math.max(0, currentHealth - 10);
-        if (currentHealth === 0) currentHealth = 100; // Reset jika 0
+        if (currentHealth === 0) currentHealth = 100; 
     }
     // Kurangi Fuel (F)
     else if (event.key === 'f' || event.key === 'F') {
         currentFuel = Math.max(0, currentFuel - 10);
-        if (currentFuel === 0) currentFuel = 100; // Reset jika 0
+        if (currentFuel === 0) currentFuel = 100; 
     }
     
-    // Perbarui RPM berdasarkan kecepatan dan gigi saat ini
     currentRPM = calculateRPM(currentSpeed, currentGear);
     
     // Simulasi Pengurangan Fuel yang lambat (opsional)
-    if (currentSpeed > 0 && Math.random() < 0.005) { // Hanya saat bergerak
+    if (currentSpeed > 0 && Math.random() < 0.005) { 
         currentFuel = Math.max(0, currentFuel - 0.1);
     }
 
@@ -128,9 +123,6 @@ document.addEventListener('keydown', (event) => {
 
 // --- Start Simulasi ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Panggil updateHUD setiap 50ms untuk animasi yang sangat halus
     setInterval(updateHUD, 50); 
-    
-    // Inisialisasi tampilan awal
     updateHUD(); 
 });
