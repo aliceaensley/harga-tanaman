@@ -3,39 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Small HUD Speedometer</title>
+    <title>Pixel Retro Speedometer</title>
     
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <div id="hud-container-small">
-
-        <div id="rpm-bar-container-small">
-            <div id="rpm-bar-fill-small"></div>
-            <div id="rpm-bar-light-small"></div>
+    <div id="pixel-hud-container">
+        
+        <div id="top-grid">
+            <div class="info-item">
+                <span class="label">SPEED</span>
+                <span id="speed-value-pixel" class="value">000</span>
+                <span class="unit">MPH</span>
+            </div>
+            <div class="info-item">
+                <span class="label">RPM</span>
+                <span id="rpm-value-pixel" class="value">0.0</span>
+                <span class="unit">K</span>
+            </div>
         </div>
 
-        <div id="main-info">
-            <div id="gear-box-small">
-                <span id="gear-value-small">N</span>
+        <div id="gear-display-pixel">
+            <span id="gear-value-pixel">N</span>
+        </div>
+
+        <div id="bottom-bar">
+            
+            <div class="status-box">
+                <span class="label">HEALTH</span>
+                <div id="health-bar-pixel" class="bar-container">
+                    <div id="health-fill-pixel" class="bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="status-box">
+                <span class="label">FUEL</span>
+                <div id="fuel-bar-pixel" class="bar-container">
+                    <div id="fuel-fill-pixel" class="bar-fill"></div>
+                </div>
             </div>
             
-            <div id="speed-display-small">
-                <span id="speed-value-small">000</span>
-            </div>
-
-            <div id="unit-info-small">
-                <span id="speed-unit-small">MPH</span>
-                <span id="fuel-value-small" class="status-value">F: 100</span>
-            </div>
+            <div id="light-indicator-pixel" class="indicator-icon-pixel">L</div>
         </div>
-        
+
     </div>
 
     <div id="sim-info-overlay">
-        Tekan 'A' (Akselerasi) dan 'D' (Deselerasi)
+        Tekan 'A' (Akselerasi), 'D' (Deselerasi), 'H' (Health), 'L' (Lampu)
     </div>
 
     <script src="script.js"></script>
