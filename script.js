@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let rpm=0, targetRpm=0;
     let fuel=100, health=100;
     let gear='N';
-    let indicators = { left:false, right:false, headlight:false, engine:true };
+    let indicators = { left:true, right:false, headlight:true, engine:true };
     let blinkOn = true;
 
     // Timer blinking indikator
@@ -36,13 +36,13 @@ window.addEventListener('DOMContentLoaded', () => {
         const p = getHUDParams();
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        // Background semi-transparent
+        // Background
         ctx.beginPath();
         ctx.arc(p.cx,p.cy,p.speedRadius+10,0,Math.PI,true);
         ctx.fillStyle='rgba(0,0,0,0.3)';
         ctx.fill();
 
-        // Speedometer dial
+        // Dial
         ctx.beginPath();
         ctx.arc(p.cx,p.cy,p.speedRadius,Math.PI,0,false);
         ctx.lineWidth = 0.08*canvas.width;
@@ -124,7 +124,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle='orange';
         ctx.fillText('RPM: '+Math.round(rpm), p.cx, p.cy+0.3*canvas.width);
 
-        // Gear, fuel, health
+        // Gear, Fuel, Health
         ctx.font=`${p.fontSizeSmall}px Arial`;
         ctx.fillStyle='#fff';
         ctx.fillText('Gear: '+gear, p.cx-0.25*canvas.width, p.cy-0.05*canvas.width);
@@ -143,22 +143,24 @@ window.addEventListener('DOMContentLoaded', () => {
         ctx.fillText('⚡', p.cx+p.indicatorOffset, p.cy+0.3*canvas.width);
     }
 
-    mp.events.add("render", () => {
-        const veh = mp.players.local.vehicle;
-        if(veh){
-            targetSpeed = veh.getSpeed()*3.6;
-            targetRpm = veh.getRPM ? veh.getRPM():3000;
-            gear = veh.getCurrentGear ? veh.getCurrentGear().toString():'N';
-            fuel = veh.getFuelLevel ? veh.getFuelLevel():100;
-            health = veh.getHealth ? veh.getHealth():100;
-            indicators.left = veh.isIndicatorLeftOn ? veh.isIndicatorLeftOn():false;
-            indicators.right = veh.isIndicatorRightOn ? veh.isIndicatorRightOn():false;
-            indicators.headlight = veh.isHeadlightOn ? veh.isHeadlightOn():false;
-            indicators.engine = veh.isEngineOn ? veh.isEngineOn():true;
-        } else {
-            targetSpeed=0; targetRpm=0; gear='N'; fuel=100; health=100;
-            indicators = {left:false,right:false,headlight:false,engine:true};
-        }
+    // Dummy data untuk test desktop
+    function updateDummyData(){
+        targetSpeed = (Math.sin(Date.now()/1000)*100 + 100); // 0-200 km/h
+        targetRpm = (Math.sin(Date.now()/500)*4000 + 4000); // 0-8000 rpm
+        gear = ['N','1','2','3','4','5'][Math.floor(Date.now()/2000)%6];
+        fuel = 80;
+        health = 95;
+        indicators.left = Math.floor(Date.now()/1000)%2===0;
+        indicators.right = Math.floor(Date.now()/1000)%2===1;
+        indicators.headlight = true;
+        indicators.engine = true;
+    }
+
+    function loop(){
+        updateDummyData();
         drawHUD();
-    });
+        requestAnimationFrame(loop);
+    }
+
+    loop();
 });
