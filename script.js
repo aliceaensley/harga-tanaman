@@ -11,13 +11,13 @@ window.addEventListener('DOMContentLoaded', () => {
     let health = 100;
     let gear = 'N';
 
-    // Fungsi draw dial
-    function drawDial() {
+    // Fungsi draw HUD
+    function drawSpeedometer() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Dial semi-circle
         ctx.beginPath();
-        ctx.arc(cx, cy, radius, Math.PI, 0, false);
+        ctx.arc(cx, cy, radius, Math.PI, 0);
         ctx.lineWidth = 10;
         ctx.strokeStyle = 'rgba(0,255,255,0.4)';
         ctx.shadowColor = 'rgba(0,255,255,0.5)';
@@ -39,7 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
             ctx.strokeStyle = '#0ff';
             ctx.stroke();
 
-            // Number every 20 km/h
             if (i % 2 === 0) {
                 const numX = cx + Math.cos(angle) * (radius - 25);
                 const numY = cy + Math.sin(angle) * (radius - 25);
@@ -51,8 +50,8 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Jarum dengan easing
-        speed += (targetSpeed - speed) * 0.05; // smooth easing
+        // Jarum smooth
+        speed += (targetSpeed - speed) * 0.05;
         const angle = Math.PI + (speed / 200) * Math.PI;
         const x = cx + Math.cos(angle) * radius * 0.9;
         const y = cy + Math.sin(angle) * radius * 0.9;
@@ -69,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Titik pusat jarum
         ctx.beginPath();
-        ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+        ctx.arc(cx, cy, 5, 0, Math.PI*2);
         ctx.fillStyle = 'red';
         ctx.fill();
 
@@ -87,26 +86,20 @@ window.addEventListener('DOMContentLoaded', () => {
         ctx.fillText('HP: ' + Math.round(health) + '%', cx, cy - 80);
     }
 
-    // Simulasi data (untuk testing)
-    function simulateData() {
-        targetSpeed += Math.random() * 4 - 2;
-        if (targetSpeed < 0) targetSpeed = 0;
-        if (targetSpeed > 200) targetSpeed = 200;
-
-        fuel += Math.random() * 1.5 - 0.5;
-        if (fuel < 0) fuel = 0;
-        if (fuel > 100) fuel = 100;
-
-        health += Math.random() * 1.5 - 0.5;
-        if (health < 0) health = 0;
-        if (health > 100) health = 100;
-
-        const gears = ['N','1','2','3','4','5'];
-        gear = gears[Math.floor(Math.random()*gears.length)];
-
-        drawDial();
-        requestAnimationFrame(simulateData);
-    }
-
-    simulateData();
+    // Fungsi update dari RageMP
+    mp.events.add("render", () => {
+        const veh = mp.players.local.vehicle;
+        if(veh){
+            targetSpeed = veh.getSpeed() * 3.6; // m/s -> km/h
+            gear = veh.getCurrentGear ? veh.getCurrentGear().toString() : 'N';
+            fuel = veh.getFuelLevel ? veh.getFuelLevel() : 100;
+            health = veh.getHealth ? veh.getHealth() : 100;
+        } else {
+            targetSpeed = 0;
+            gear = 'N';
+            fuel = 100;
+            health = 100;
+        }
+        drawSpeedometer();
+    });
 });
