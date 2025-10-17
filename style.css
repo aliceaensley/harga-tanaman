@@ -1,6 +1,6 @@
 /* --- Global & Variables --- */
 :root {
-    --main-bg-dark: #1a1a1a;
+    --main-bg-dark: rgba(26, 26, 26, 0.7); /* Background semi-transparan */
     --secondary-bg-dark: #2c2c2c;
     --accent-blue: #00bcd4; /* Cyan */
     --text-light: #f0f0f0;
@@ -11,8 +11,13 @@
 }
 
 body {
-    background-color: none; /* BARIS INI YANG MEMBUAT LAYAR HITAM */
+    /* PENTING: Untuk Transparansi Layar Penuh */
+    background-color: transparent; 
+    
+    /* Layout Body */
     display: flex;
+    justify-content: flex-end; /* Pusatkan ke kanan */
+    align-items: flex-end;   /* Pusatkan ke bawah */
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -23,31 +28,33 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- Speedometer Container --- */
+/* --- Speedometer Container (POSISI & UKURAN) --- */
 #speedometer-container {
     position: fixed;
-    bottom: 30px;    /* Jarak 30px dari bawah (sedikit ke atas) */
-    right: 30px;     /* Jarak 30px dari kanan (sedikit ke kiri) */
+    bottom: 30px;    /* Jarak dari bawah */
+    right: 30px;     /* Jarak dari kanan */
     
-    width: 380px;    /* PERBESAR LEBAR (misalnya dari 320px ke 380px) */
-    height: 380px;   /* PERBESAR TINGGI (misalnya dari 320px ke 380px) */
+    width: 420px;    /* UKURAN CAKEP (Tidak Kekecilan) */
+    height: 420px;   /* UKURAN CAKEP */
     
     background: var(--main-bg-dark);
     border-radius: 50%;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    /* Efek glow halus */
+    box-shadow: 0 0 25px rgba(0, 188, 212, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1); 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 }
+
 /* --- Outer Ring (RPM/Power) --- */
 #outer-ring-bg {
     position: absolute;
     width: calc(100% - 20px);
     height: calc(100% - 20px);
     border-radius: 50%;
-    border: 8px solid var(--secondary-bg-dark);
+    border: 10px solid var(--secondary-bg-dark); /* Lebih tebal */
     box-sizing: border-box;
 }
 
@@ -56,13 +63,13 @@ body {
     width: calc(100% - 20px);
     height: calc(100% - 20px);
     border-radius: 50%;
-    border: 8px solid transparent; /* Awalnya transparan */
-    border-top-color: var(--accent-blue); /* Mulai dengan warna aksen */
+    border: 10px solid transparent; 
+    border-top-color: var(--accent-blue);
     border-right-color: var(--accent-blue);
-    transform: rotate(45deg); /* Putar agar top-right menjadi awal */
+    transform: rotate(45deg);
     box-sizing: border-box;
-    transition: transform 0.1s linear; /* Animasi halus */
-    filter: drop-shadow(0 0 5px var(--accent-blue)); /* Efek glow */
+    transition: transform 0.1s linear;
+    filter: drop-shadow(0 0 7px var(--accent-blue)); 
 }
 
 /* --- Center Display (Speed) --- */
@@ -70,20 +77,20 @@ body {
     position: relative;
     z-index: 10;
     text-align: center;
-    margin-top: -30px; /* Geser sedikit ke atas agar seimbang */
+    margin-top: -35px; /* Sesuaikan untuk pusat visual */
 }
 
 #speed-value {
     font-family: 'Aldrich', sans-serif;
-    font-size: 6.5em;
+    font-size: 7.5em; /* Ukuran besar yang pas */
     font-weight: bold;
     color: var(--text-light);
     line-height: 1;
-    text-shadow: 0 0 15px rgba(0, 188, 212, 0.7);
+    text-shadow: 0 0 20px rgba(0, 188, 212, 0.9);
 }
 
 #speed-unit {
-    font-size: 1.1em;
+    font-size: 1.2em;
     color: var(--text-muted);
     margin-top: 5px;
 }
@@ -91,10 +98,10 @@ body {
 /* --- Gear Display --- */
 #gear-display {
     position: absolute;
-    top: 20%; /* Posisikan di atas speed */
+    top: 20%; 
     background: var(--secondary-bg-dark);
-    padding: 5px 15px;
-    border-radius: 5px;
+    padding: 7px 20px;
+    border-radius: 7px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -108,16 +115,16 @@ body {
 
 #gear-value {
     font-family: 'Aldrich', sans-serif;
-    font-size: 2.8em;
+    font-size: 3em; 
     font-weight: bold;
-    color: var(--warning-yellow); /* Kuning untuk Gear */
-    text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+    color: var(--warning-yellow); 
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.7);
 }
 
 /* --- Bottom Status (Fuel & Health) --- */
 #bottom-status {
     position: absolute;
-    bottom: 20px;
+    bottom: 25px;
     width: 80%;
     display: flex;
     justify-content: space-around;
@@ -137,17 +144,17 @@ body {
 
 .bar-bg {
     width: 100%;
-    height: 8px;
+    height: 10px; /* Lebih tinggi */
     background-color: var(--secondary-bg-dark);
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
     margin-top: 5px;
 }
 
 .bar-fill {
     height: 100%;
-    width: 100%; /* Default */
-    border-radius: 4px;
+    width: 100%;
+    border-radius: 5px;
     transition: width 0.3s ease-out, background-color 0.3s;
 }
 
