@@ -8,6 +8,13 @@
 </head>
 <body>
 <canvas id="speedoCanvas" width="300" height="300"></canvas>
-<script src="script.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('speedoCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'red';
+    ctx.fillRect(50,50,100,100); // Tes kotak merah
+});
+</script>
 </body>
 </html>
