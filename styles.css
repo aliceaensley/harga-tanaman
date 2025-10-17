@@ -1,4 +1,4 @@
-/* --- Global & Setup --- */
+/* --- Variabel & Global --- */
 :root {
     --neon-blue: #00FFFF;
     --neon-red: #FF0077;
@@ -13,162 +13,110 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    font-family: 'Major Mono Display', monospace; /* Font keren! */
+    font-family: 'Major Mono Display', monospace;
     color: var(--neon-blue);
     overflow: hidden;
 }
 
-#hud-container {
+/* --- Container Utama (Kecil) --- */
+#hud-container-small {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 300px;
-    padding: 20px;
+    bottom: 20px;
+    right: 20px;
+    width: 200px; /* Ukuran diperkecil */
+    padding: 10px;
     background: var(--dark-bg);
     border: 1px solid rgba(0, 255, 255, 0.3);
-    border-radius: 10px;
-    box-shadow: 0 0 30px var(--neon-blue);
-    display: grid;
-    grid-template-areas:
-        "speed speed"
-        "info info"
-        "status status";
-    gap: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px var(--neon-blue);
+    user-select: none;
 }
 
-/* --- Speed Display --- */
-#speed-display {
-    grid-area: speed;
+/* --- Main Info Layout --- */
+#main-info {
     display: flex;
-    align-items: baseline;
-    justify-content: center;
-    text-align: center;
-}
-
-#speed-value {
-    font-size: 7em;
-    font-weight: 900;
-    line-height: 1;
-    text-shadow: 0 0 20px var(--neon-blue);
-    transition: color 0.2s; /* Untuk indikasi zona merah */
-}
-
-#speed-unit {
-    font-size: 1.5em;
-    margin-left: 5px;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* --- Info Section (Gear & RPM Bar) --- */
-#info-section {
-    grid-area: info;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(0, 255, 255, 0.2);
+    align-items: flex-end;
+    padding: 5px 0;
 }
 
-/* Gear Box */
-#gear-box {
+/* 1. Gear Box */
+#gear-box-small {
     width: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: left;
 }
 
-#gear-box .label {
-    font-size: 0.8em;
-    color: rgba(255, 255, 255, 0.5);
-}
-
-#gear-value {
-    font-size: 3em;
-    text-shadow: 0 0 10px var(--neon-red);
+#gear-value-small {
+    font-size: 2.5em; /* Lebih kecil */
+    text-shadow: 0 0 8px var(--neon-red);
     color: var(--neon-red);
     line-height: 1;
 }
 
-/* RPM Bar */
-#rpm-bar-container {
-    width: 70%;
-    height: 10px;
-    background-color: rgba(0, 255, 255, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-    position: relative;
+/* 2. Speed Display */
+#speed-display-small {
+    text-align: center;
+    flex-grow: 1; /* Ambil ruang sisa di tengah */
 }
 
-#rpm-bar-fill {
+#speed-value-small {
+    font-size: 4.5em;
+    font-weight: 900;
+    line-height: 1;
+    text-shadow: 0 0 15px var(--neon-blue);
+    transition: color 0.2s;
+}
+
+/* 3. Unit & Status */
+#unit-info-small {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#fuel-value-small {
+    color: #FFD700; /* Kuning untuk Fuel */
+    margin-top: 5px;
+}
+
+/* --- RPM Bar (Atas) --- */
+#rpm-bar-container-small {
+    width: 100%;
+    height: 6px; /* Lebih tipis */
+    background-color: rgba(0, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+#rpm-bar-fill-small {
     height: 100%;
     width: 0%;
     background: linear-gradient(to right, #00FFC0, var(--neon-blue));
-    transition: width 0.1s linear; /* Responsif */
+    transition: width 0.1s linear;
     position: relative;
     z-index: 2;
 }
 
-/* Garis lampu merah saat RPM tinggi */
-#rpm-bar-light {
+#rpm-bar-light-small {
     position: absolute;
     top: 0;
     right: 0;
-    width: 20%; /* Zona merah 80% ke atas */
+    width: 20%; 
     height: 100%;
     background-color: rgba(255, 0, 119, 0.3); 
     z-index: 1;
-}
-
-#rpm-value-digital {
-    width: 100%;
-    text-align: right;
-    font-size: 0.9em;
-    margin-top: 5px;
-}
-
-/* --- Status Arc (Fuel/Health) --- */
-#status-arc-container {
-    grid-area: status;
-    width: 100%;
-    height: 50px;
-    position: relative;
-    margin-top: -30px; /* Geser ke atas agar menempel ke info-section */
-}
-
-#status-arc-container svg {
-    width: 100%;
-    height: 100%;
-    /* Putar SVG agar busur berada di bawah */
-    transform: rotate(180deg);
-}
-
-.arc-label {
-    font-size: 8px;
-    fill: rgba(255, 255, 255, 0.5);
-    transform: rotate(180deg); /* Putar label agar tidak terbalik */
-    transform-origin: 50% 50%;
-}
-
-#status-arc-fill {
-    /* Panjang total busur adalah 125.66 (semi-lingkaran radius 40) */
-    stroke-dasharray: 125.66;
-    transition: stroke-dashoffset 0.5s ease-out;
-}
-
-#fuel-value {
-    position: absolute;
-    bottom: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1em;
-    color: #FFD700; /* Kuning untuk Fuel */
 }
 
 /* --- Overlay Debug --- */
 #sim-info-overlay {
     position: fixed;
     bottom: 0px;
-    right: 30px;
+    right: 20px;
     padding: 5px 10px;
     background-color: rgba(0, 0, 0, 0.8);
     color: #00FF00;
