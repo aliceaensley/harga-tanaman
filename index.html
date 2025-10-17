@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Speedometer</title>
-<link rel="stylesheet" href="style.css">
+    <title>Retro Speedometer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<canvas id="speedoCanvas"></canvas>
-<script src="script.js"></script>
+    <div id="speedometer-container" class="hidden">
+        <div id="speedometer-dial">
+            <div id="speed-numbers">
+                <span class="mark mark-0">0</span>
+                <span class="mark mark-40">40</span>
+                <span class="mark mark-80">80</span>
+                <span class="mark mark-120">120</span>
+                <span class="mark mark-160">160</span>
+                <span class="mark mark-200">200</span>
+            </div>
+            
+            <div id="center-pin"></div>
+            <div id="speed-needle"></div>
+            
+            <div id="digital-display">
+                <span id="speed-value">000</span> KM/H
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
