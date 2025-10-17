@@ -1,120 +1,263 @@
+/* --- Global & Font --- */
 body {
-    /* Hanya untuk demo, agar mudah dilihat */
-    min-height: 100vh;
-    background-color: #f0f0f0; 
+    background-color: #333; /* Latar belakang gelap untuk demo */
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    min-height: 100vh;
+    font-family: 'Oxanium', sans-serif;
+    color: white;
 }
 
-/* --- Posisi Utama --- */
-#speedometer-container {
+/* Container utama di pojok kanan bawah */
+#hud-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 250px; 
-    height: 250px;
-    transition: opacity 0.3s;
-    user-select: none; /* Mencegah seleksi teks */
+    bottom: 20px;
+    right: 20px;
+    width: 350px; /* Lebar total HUD */
+    display: grid;
+    grid-template-columns: 1fr 1.2fr; /* Kolom Stats dan Kolom Radio */
+    gap: 10px;
 }
 
-/* --- Tampilan Dial (Retro Look) --- */
-#speedometer-dial {
+/* Gaya Umum Kotak HUD */
+.hud-box {
+    background-color: rgba(10, 0, 15, 0.8); /* Basis sangat gelap/ungu */
+    border: 1px solid #FF1493; /* Warna Neon Magenta */
+    box-shadow: 0 0 15px #FF1493;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* --- 1. SPEED SECTION (Paling Atas) --- */
+#speed-section {
+    grid-column: 1 / span 2; /* Mencakup kedua kolom */
+    height: 120px;
+    padding: 0;
+    border-radius: 10px;
+    overflow: hidden;
     position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    /* Gradient dan Shadow untuk kesan kedalaman dan retro */
-    background: radial-gradient(circle at center, #333 0%, #111 100%);
-    border: 8px solid #555;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.8);
-}
-
-/* --- Jarum Speedometer --- */
-#center-pin {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #F44336; /* Merah Retro */
-    z-index: 100;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
-}
-
-#speed-needle {
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    width: 4px;
-    height: 48%; 
-    transform-origin: bottom center;
-    background-color: #F44336; /* Merah Jarum */
-    z-index: 90;
     
-    /* Jarum dimulai dari sudut 135 derajat (posisi 0) */
-    transform: translateX(-50%) rotate(135deg);
-    transition: transform 0.1s linear; /* Transisi halus */
-    border-radius: 2px 2px 0 0;
+    /* Background Gradient Neon Khas Synthwave */
+    background: linear-gradient(to right, #DA00FF, #FF0090); 
+    box-shadow: 0 0 25px rgba(255, 0, 144, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-/* --- Angka Skala dan Tanda --- */
-#speed-numbers {
+#speed-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    color: #FFC107; /* Kuning/Oranye hangat khas Retro */
-    font-size: 0.9em;
-    font-weight: bold;
+    overflow: hidden;
+    z-index: 1;
 }
 
-.mark {
+/* Efek Siluet Palem */
+.palm-silhouettes {
     position: absolute;
-    transform-origin: 50% 100%;
-    text-shadow: 0 0 2px rgba(255, 193, 7, 0.5); /* Efek glow tipis */
+    bottom: 0;
+    width: 150%; 
+    height: 100%;
+    left: -20%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path fill="%23000" opacity="0.5" d="M0 50 L10 10 L25 50 L40 5 L50 50 L70 0 L90 50 L100 40 L100 50 Z"/></svg>') repeat-x bottom;
+    background-size: 50% 100%;
+    /* Miringkan sedikit agar terlihat seperti di kejauhan */
+    transform: perspective(100px) rotateX(10deg); 
 }
 
-/* Penempatan Angka pada Lingkaran (Menggunakan posisi absolut dan transform rotate) */
-/* Posisi 0 KM/H (135 derajat) */
-.mark-0 { bottom: 10%; left: 10%; transform: rotate(135deg); } 
-/* Posisi 40 KM/H */
-.mark-40 { top: 30%; left: 0%; transform: translate(-50%, -50%) rotate(180deg); }
-/* Posisi 80 KM/H */
-.mark-80 { top: 10%; left: 20%; transform: rotate(-135deg) translate(0, -50%) rotate(-90deg); }
-/* Posisi 120 KM/H (Atas Tengah) */
-.mark-120 { top: 0; left: 50%; transform: translate(-50%, 0); } 
-/* Posisi 160 KM/H */
-.mark-160 { top: 10%; right: 20%; transform: rotate(135deg) translate(0, -50%) rotate(90deg); }
-/* Posisi 200 KM/H (45 derajat) */
-.mark-200 { bottom: 10%; right: 10%; transform: rotate(-135deg); } 
-
-/* --- Digital Display (Odometer/Speed) --- */
-#digital-display {
+/* Efek Matahari/Glow */
+.sun-glow {
     position: absolute;
-    bottom: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 5px 10px;
-    background-color: #222; 
-    border: 1px solid #444;
-    border-radius: 3px;
-    color: #00FF00; /* Warna Hijau Digital Khas Retro */
-    font-family: 'Courier New', monospace;
+    top: -20px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #FFFF00; /* Kuning Neon */
+    filter: blur(15px);
+    opacity: 0.7;
+}
+
+#speed-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px 15px;
+    color: white;
+    z-index: 2;
+}
+
+#speed-label {
     font-size: 1.1em;
-    box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.5); /* Efek layar digital */
+    font-weight: 700;
+    text-shadow: 0 0 5px #FFD700;
+}
+
+#speed-display-box {
+    margin-top: 5px;
+    display: flex;
+    align-items: baseline;
 }
 
 #speed-value {
-    font-weight: bold;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 4em;
+    font-weight: 900;
+    text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Aqua Neon */
+    line-height: 1;
 }
 
-/* --- Info Simulasi (Opsional) --- */
-#sim-info {
-    text-align: right;
-    color: #333;
+#speed-unit {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 1.5em;
+    margin-left: 5px;
+    color: #00FFFF;
+    text-shadow: 0 0 5px #00FFFF;
+}
+
+/* --- 2. STATUS STATS (Bawah Kiri) --- */
+#stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    gap: 8px 15px;
+    padding: 10px 15px;
+    background-color: rgba(10, 0, 15, 0.8);
+    border: 1px solid #DA00FF; /* Ungu Neon */
+    box-shadow: 0 0 15px #DA00FF;
+    border-radius: 5px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0;
+}
+
+.stat-label {
     font-size: 0.9em;
+    color: #E0B0FF; /* Lavender/Ungu Muda */
+}
+
+.stat-value {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em;
+    color: #00FFFF; /* Aqua Neon */
+    text-shadow: 0 0 3px #00FFFF;
+}
+
+/* Row Gear */
+.gear-row {
+    grid-column: 1 / span 2;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 8px;
+    margin-top: 5px;
+}
+#gear-value {
+    font-size: 1.8em;
+    text-shadow: 0 0 10px #FF0090;
+    color: #FF0090;
+}
+
+/* Indikator Lampu */
+.indicator-icon svg {
+    width: 20px;
+    height: 20px;
+    color: #333; /* Default non-aktif */
+    transition: color 0.3s;
+}
+
+.indicator-icon svg.active {
+    color: #00FF00; /* Hijau aktif */
+    text-shadow: 0 0 5px #00FF00;
+}
+
+
+/* --- Health Bar --- */
+#health-bar-container {
+    grid-column: 1 / span 2;
+    height: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+#health-bar-fill {
+    height: 100%;
+    width: 100%; /* Default 100% */
+    background: linear-gradient(to right, #00FF00, #4CAF50);
+    transition: width 0.3s;
+}
+
+/* --- 3. RADIO SECTION (Bawah Kanan) --- */
+#radio-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-color: #FFFF00;
+    box-shadow: 0 0 15px #FFFF00;
+}
+
+#radio-label {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #FFD700;
+}
+
+#station-name {
+    font-size: 1.4em;
+    margin: 5px 0;
+    color: #FF0090;
+    text-shadow: 0 0 5px #FF0090;
+}
+
+/* Simulasi Audio Visualizer */
+#audio-visualizer {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 20px;
     margin-top: 10px;
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    background-color: #DA00FF;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.dot.active {
+    height: 15px;
+    background-color: #FF0090;
+    box-shadow: 0 0 5px #FF0090;
+}
+
+#radio-hint {
+    font-size: 0.8em;
+    margin-top: 15px;
+    color: #E0B0FF;
+}
+
+/* --- 4. DEBUG INFO --- */
+#sim-info-overlay {
+    position: fixed;
+    bottom: 0px;
+    right: 20px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #00FF00;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
