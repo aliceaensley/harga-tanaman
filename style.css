@@ -25,9 +25,13 @@ body {
 
 /* --- Speedometer Container --- */
 #speedometer-container {
-    position: fixed; /* Mengubah dari 'relative' menjadi 'fixed' */
-    bottom: 20px;    /* Jarak 20px dari bawah layar */
-    right: 20px;     /* Jarak 20px dari kanan layar */
+    position: fixed;
+    bottom: 30px;    /* Jarak 30px dari bawah (sedikit ke atas) */
+    right: 30px;     /* Jarak 30px dari kanan (sedikit ke kiri) */
+    
+    width: 380px;    /* PERBESAR LEBAR (misalnya dari 320px ke 380px) */
+    height: 380px;   /* PERBESAR TINGGI (misalnya dari 320px ke 380px) */
+    
     background: var(--main-bg-dark);
     border-radius: 50%;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
@@ -35,9 +39,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Penting untuk ring luar */
+    overflow: hidden;
 }
-
 /* --- Outer Ring (RPM/Power) --- */
 #outer-ring-bg {
     position: absolute;
@@ -72,7 +75,7 @@ body {
 
 #speed-value {
     font-family: 'Aldrich', sans-serif;
-    font-size: 5.5em;
+    font-size: 6.5em;
     font-weight: bold;
     color: var(--text-light);
     line-height: 1;
@@ -80,7 +83,7 @@ body {
 }
 
 #speed-unit {
-    font-size: 0.9em;
+    font-size: 1.1em;
     color: var(--text-muted);
     margin-top: 5px;
 }
@@ -99,13 +102,13 @@ body {
 }
 
 #gear-display .label {
-    font-size: 0.7em;
+    font-size: 0.8em;
     color: var(--text-muted);
 }
 
 #gear-value {
     font-family: 'Aldrich', sans-serif;
-    font-size: 2.2em;
+    font-size: 2.8em;
     font-weight: bold;
     color: var(--warning-yellow); /* Kuning untuk Gear */
     text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
@@ -127,7 +130,7 @@ body {
 }
 
 .status-item .label {
-    font-size: 0.7em;
+    font-size: 0.8em;
     color: var(--text-muted);
     margin-bottom: 5px;
 }
