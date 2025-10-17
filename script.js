@@ -1,13 +1,22 @@
-// Fungsi untuk mengupdate kecepatan dan posisi jarum
-function updateSpeedometer(speed) {
-    const needle = document.getElementById('needle');
-    const speedElement = document.getElementById('speed');
-    const maxSpeed = 200; // Kecepatan maksimum dalam km/h
-    const rotation = (speed / maxSpeed) * 180; // Menghitung sudut rotasi jarum
+// Fungsi dari template jgvrp-speedometer-template
+function setSpeed(speed) {
+    // speed dalam m/s, dikonversi ke km/h
+    const kmh = speed * 3.6;
+    const speedText = document.getElementById('speed-text');
+    if(speedText) speedText.innerText = Math.round(kmh) + " km/h";
 
-    needle.style.transform = `rotate(${rotation}deg)`;
-    speedElement.textContent = `${Math.round(speed)} km/h`;
+    const needle = document.getElementById('speed-needle');
+    if(needle) {
+        const rotation = Math.min(kmh, 200) / 200 * 180;
+        needle.style.transform = `rotate(${rotation}deg)`;
+    }
 }
 
-// Misalnya, kita dapat memanggil fungsi ini dengan kecepatan tertentu
-updateSpeedometer(120); // Contoh kecepatan 120 km/h
+// Contoh elemen HUD spedometer
+const container = document.getElementById('speedometer-container');
+container.innerHTML = `
+<div id="speedometer">
+    <div id="speed-needle"></div>
+    <div id="speed-text">0 km/h</div>
+</div>
+`;
