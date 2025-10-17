@@ -1,19 +1,13 @@
-// RageMP client-side
-mp.events.add("render", () => {
-    let playerVeh = mp.players.local.vehicle;
-    let speed = 0;
+// Fungsi untuk mengupdate kecepatan dan posisi jarum
+function updateSpeedometer(speed) {
+    const needle = document.getElementById('needle');
+    const speedElement = document.getElementById('speed');
+    const maxSpeed = 200; // Kecepatan maksimum dalam km/h
+    const rotation = (speed / maxSpeed) * 180; // Menghitung sudut rotasi jarum
 
-    if (playerVeh) {
-        speed = playerVeh.getSpeed() * 3.6; // km/h
-    }
+    needle.style.transform = `rotate(${rotation}deg)`;
+    speedElement.textContent = `${Math.round(speed)} km/h`;
+}
 
-    // Update HUD utama
-    document.getElementById("speedTextMain").innerText = Math.round(speed) + " km/h";
-    let needleDegMain = Math.min(speed, 200) / 200 * 180;
-    document.getElementById("needleMain").style.transform = `rotate(${needleDegMain}deg)`;
-
-    // Update HUD mini
-    document.getElementById("speedTextMini").innerText = Math.round(speed) + " km/h";
-    let needleDegMini = Math.min(speed, 200) / 200 * 180;
-    document.getElementById("needleMini").style.transform = `rotate(${needleDegMini}deg)`;
-});
+// Misalnya, kita dapat memanggil fungsi ini dengan kecepatan tertentu
+updateSpeedometer(120); // Contoh kecepatan 120 km/h
