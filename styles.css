@@ -1,30 +1,7 @@
-#speedometer {
+#speedometer-container {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    width: 200px;
-    height: 200px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    border: 5px solid #00ffcc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #00ffcc;
-    font-family: Arial, sans-serif;
-    font-size: 24px;
-    text-align: center;
-}
-
-#needle {
-    position: absolute;
-    width: 2px;
-    height: 50%;
-    background: red;
-    bottom: 50%;
-    left: 50%;
-    transform-origin: bottom center;
-    transform: rotate(0deg);
-    transition: transform 0.1s linear;
+    width: 220px;
+    height: 220px;
 }
