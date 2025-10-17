@@ -46,6 +46,8 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    /* Mulai tersembunyi, akan diatur oleh JS */
+    display: none; 
 }
 
 /* --- Outer Ring (RPM/Power) --- */
@@ -82,7 +84,7 @@ body {
 
 #speed-value {
     font-family: 'Aldrich', sans-serif;
-    font-size: 7.5em; /* Ukuran font disesuaikan */
+    font-size: 7.5em; 
     font-weight: bold;
     color: var(--text-light);
     line-height: 1;
@@ -163,9 +165,4 @@ body {
 
 #health-bar-fill {
     background-color: var(--success-green);
-}
-
-/* --- Simulation Info Overlay (Dihapus di HTML, tapi jika ada, tetap disembunyikan) --- */
-#sim-info-overlay {
-    display: none; 
 }
