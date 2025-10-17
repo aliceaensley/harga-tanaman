@@ -7,10 +7,13 @@ mp.events.add("render", () => {
         speed = playerVeh.getSpeed() * 3.6; // km/h
     }
 
-    // Update teks kecepatan
-    document.getElementById("speedText").innerText = Math.round(speed) + " km/h";
+    // Update HUD utama
+    document.getElementById("speedTextMain").innerText = Math.round(speed) + " km/h";
+    let needleDegMain = Math.min(speed, 200) / 200 * 180;
+    document.getElementById("needleMain").style.transform = `rotate(${needleDegMain}deg)`;
 
-    // Update jarum (0-200 km/h => 0-180 derajat)
-    let needleDeg = Math.min(speed, 200) / 200 * 180;
-    document.getElementById("needle").style.transform = `rotate(${needleDeg}deg)`;
+    // Update HUD mini
+    document.getElementById("speedTextMini").innerText = Math.round(speed) + " km/h";
+    let needleDegMini = Math.min(speed, 200) / 200 * 180;
+    document.getElementById("needleMini").style.transform = `rotate(${needleDegMini}deg)`;
 });
