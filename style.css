@@ -38,9 +38,9 @@ body {
 
 /* --- Speedometer Container --- */
 #speedometer-container {
-    position: relative;
-    width: 320px;
-    height: 320px;
+    position: fixed; /* Mengubah dari 'relative' menjadi 'fixed' */
+    bottom: 20px;    /* Jarak 20px dari bawah layar */
+    right: 20px;     /* Jarak 20px dari kanan layar */
     background: var(--main-bg-dark);
     border-radius: 50%;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
