@@ -1,24 +1,33 @@
 body {
   margin: 0;
-  background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+  overflow: hidden;
+  background: transparent;
   font-family: "Poppins", sans-serif;
   color: white;
+}
+
+/* ===== Mini Speedometer Container ===== */
+.speedometer-mini {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  width: 180px;
+  height: 180px;
+  background: rgba(10, 10, 20, 0.6);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  backdrop-filter: blur(4px);
 }
 
-.speedometer {
-  position: relative;
-  width: 300px;
-  height: 300px;
-}
-
+/* ===== Circle + Needle ===== */
 .circle {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
 }
 
 svg {
@@ -32,16 +41,16 @@ svg {
 
 circle {
   fill: none;
-  stroke-width: 8;
+  stroke-width: 7;
   stroke-linecap: round;
 }
 
 circle.bg {
-  stroke: #222;
+  stroke: rgba(255, 255, 255, 0.1);
 }
 
 circle.progress {
-  stroke: #00e0ff;
+  stroke: #00ffff;
   stroke-dasharray: 283;
   stroke-dashoffset: 283;
   transition: stroke-dashoffset 0.3s ease;
@@ -52,8 +61,8 @@ circle.progress {
   top: 50%;
   left: 50%;
   width: 2px;
-  height: 40%;
-  background: red;
+  height: 38%;
+  background: #ff0040;
   transform-origin: bottom center;
   transform: rotate(0deg);
   transition: transform 0.2s ease-out;
@@ -63,39 +72,52 @@ circle.progress {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 12px;
-  height: 12px;
-  background: white;
+  width: 10px;
+  height: 10px;
+  background: #fff;
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
 
+/* ===== Speed Display ===== */
 .speed-display {
   position: absolute;
-  top: 60%;
+  top: 65%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   text-align: center;
 }
 
 #speed {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
+  color: #00e0ff;
 }
 
 .unit {
-  font-size: 0.9rem;
-  color: #aaa;
+  font-size: 0.8rem;
+  color: #bbb;
+  display: block;
+  margin-top: -5px;
 }
 
-.info {
+/* ===== Extra Info (RPM, Fuel, Gear) ===== */
+.extra-info {
   position: absolute;
-  bottom: -80px;
-  width: 100%;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  font-size: 0.8rem;
   text-align: center;
-  font-size: 0.9rem;
+  color: #aef;
+  display: flex;
+  justify-content: space-between;
 }
 
-.item {
-  margin-top: 5px;
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33%;
 }
