@@ -1,26 +1,23 @@
-let speed = 0;
-
-// Fungsi update jarum dan teks kecepatan
-function updateSpeedometer(speed) {
-    const needle = document.getElementById('needle');
-    const speedText = document.getElementById('speedText');
-    
-    // Batasi kecepatan max 200 km/h untuk jarum
-    const rotation = Math.min(speed, 200) / 200 * 180;
-    
-    needle.style.transform = `rotate(${rotation}deg)`;
-    speedText.textContent = `${Math.round(speed)} km/h`;
+// Fungsi untuk memperbarui nilai pada elemen
+function updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    }
 }
 
-// Simulasi kecepatan naik turun (untuk testing)
-function simulateSpeed() {
-    speed += Math.random() * 4 - 2; // naik/turun random
-    if(speed < 0) speed = 0;
-    if(speed > 200) speed = 200;
-    
-    updateSpeedometer(speed);
-    requestAnimationFrame(simulateSpeed);
+// Fungsi untuk mensimulasikan data
+function simulateData() {
+    let speed = Math.floor(Math.random() * 201); // 0 - 200 km/h
+    let gear = ['N', '1', '2', '3', '4', '5'][Math.floor(Math.random() * 6)];
+    let fuel = Math.floor(Math.random() * 101); // 0 - 100%
+    let health = Math.floor(Math.random() * 101); // 0 - 100%
+
+    updateElement('speedValue', speed.toString().padStart(3, '0'));
+    updateElement('gearValue', gear);
+    updateElement('fuelValue', fuel);
+    updateElement('healthValue', health);
 }
 
-// Mulai simulasi
-simulateSpeed();
+// Update data setiap 1 detik
+setInterval(simulateData, 1000);
