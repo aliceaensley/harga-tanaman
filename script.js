@@ -15,12 +15,12 @@ document.getElementById('cropPriceForm').addEventListener('submit', function(e) 
     
     let publicData = [];
     let privateData = [];
-    let privatePricesHTML = '<table><thead><tr><th>Crop Name:</th><th>Crop Supply:</th><th>Selling Prices:</th></tr></thead><tbody>';
+    let privatePricesTableBodyHTML = ''; // Hanya body tabel untuk harga privat
     
     const now = new Date();
     // Format waktu agar sesuai dengan contoh: Yesterday at 15.15
     const formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }).replace(':', '.');
-    // Untuk tujuan demo, kita asumsikan "Hari Ini" atau "Yesterday"
+    // Untuk tujuan demo, kita asumsikan "Hari Ini"
     const timeText = "Hari Ini";
 
     // 1. Kumpulkan data dan hitung harga private
@@ -40,7 +40,7 @@ document.getElementById('cropPriceForm').addEventListener('submit', function(e) 
         // Bulatkan ke 2 desimal (harga mata uang)
         pricePrivate = parseFloat(pricePrivate.toFixed(2)); 
 
-        // Simpan data
+        // Simpan data untuk Discord Embed
         publicData.push({
             name: crop,
             supply: supplyPublic,
@@ -53,8 +53,8 @@ document.getElementById('cropPriceForm').addEventListener('submit', function(e) 
             price: pricePrivate.toFixed(2)
         });
 
-        // Tampilkan Harga Private di halaman web
-        privatePricesHTML += `
+        // Bangun HTML untuk tabel Private Prices di halaman web
+        privatePricesTableBodyHTML += `
             <tr>
                 <td>${crop}</td>
                 <td>${supplyPublic} crops</td>
@@ -63,40 +63,41 @@ document.getElementById('cropPriceForm').addEventListener('submit', function(e) 
         `;
     });
 
-    privatePricesHTML += '</tbody></table>';
+    // Perbarui konten tabel private prices di halaman web
+    document.querySelector('#privatePrices tbody').innerHTML = privatePricesTableBodyHTML;
+    // Perbarui footer waktu
+    document.getElementById('privatePricesFooter').innerHTML = 
+        `<img src="https://discord.com/assets/f7652397753a47900b213.svg" alt="Anonymous icon"> Last updated by Anonymous • ${timeText} at ${formattedTime}`;
 
-    // Tampilkan hasil perhitungan Private di div
-    document.getElementById('privatePrices').innerHTML = privatePricesHTML + 
-        `<p>👤 Last updated by Anonymous • ${timeText} at ${formattedTime}</p>`;
 
-
-    // 2. Format pesan untuk Discord Webhook (Menggunakan Embeds untuk tampilan seperti tabel)
+    // 2. Format pesan untuk Discord Webhook (Menggunakan Embeds)
     
     // Konversi data menjadi string baris per baris untuk deskripsi Discord Embed
     const publicFields = publicData.map(c => 
-        `**${c.name}**: ${c.supply} crops | **$${c.price}/crop**`
+        `**${c.name}**: ${c.supply} crops, **$${c.price}/crop**`
     ).join('\n');
 
     const privateFields = privateData.map(c => 
-        `**${c.name}**: ${c.supply} crops | **$${c.price}/crop**`
+        `**${c.name}**: ${c.supply} crops, **$${c.price}/crop**`
     ).join('\n');
 
     // Struktur pesan Discord (Payload)
     const discordPayload = {
         username: "Crop Price Tracker Bot", // Nama yang akan muncul di Discord
-        avatar_url: "https://i.imgur.com/your_image_url.png", // Opsional: Ganti dengan URL gambar bot Anda
+        avatar_url: "https://discord.com/assets/f7652397753a47900b213.svg", // Menggunakan ikon "Anonymous" Discord
         embeds: [
             {
                 title: "🌱 Public Crop Prices",
-                description: "Data berikut tidak otomatis diperbarui oleh server dan mungkin tidak akurat untuk periode waktu tertentu.\n\n" + publicFields,
+                description: "These following data are not automatically updated by the server.\nThe data may not be accurate for a certain period of time.\n\n" + publicFields,
                 color: 5763719, // Warna Hijau (Discord)
             },
             {
                 title: "🌿 Private Crop Prices",
-                description: "Harga Private dihitung otomatis (+11.11%) berdasarkan harga publik.\n\n" + privateFields,
+                description: "These following data are not automatically updated by the server.\nThe data may not be accurate for a certain period of time.\n\n" + privateFields,
                 color: 16753920, // Warna Emas
                 footer: {
-                    text: `👤 Last updated by Anonymous • ${timeText} at ${formattedTime}`
+                    text: `Last updated by Anonymous • ${timeText} at ${formattedTime}`,
+                    icon_url: "https://discord.com/assets/f7652397753a47900b213.svg"
                 }
             }
         ]
@@ -114,7 +115,7 @@ document.getElementById('cropPriceForm').addEventListener('submit', function(e) 
         if (response.ok) {
             alert('✅ Data harga berhasil dikirim ke Discord!');
         } else {
-            alert('❌ Gagal mengirim data ke Discord. Cek konsol untuk detail error (misalnya, URL Webhook salah).');
+            alert('❌ Gagal mengirim data ke Discord. Cek konsol browser untuk detail error (misalnya, URL Webhook salah atau masalah CORS).');
             console.error('Failed to send to Discord Webhook', response);
         }
     })
