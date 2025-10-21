@@ -1,5 +1,7 @@
-// PASTIKAN URL WEBHOOK INI SUDAH BENAR DAN AKTIF
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1430323817137569802/vF31PN09LnMA-ua0v3WZYITnZ-_wyLapSehD0qWhWF4prdZBt_KpCwKQVJikTL9tnZp7';
+// ====================================================================================
+// PERHATIAN: URL WEBHOOK TELAH DIGANTI SESUAI PERMINTAAN TERBARU
+// ====================================================================================
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1430327141265834054/5Rzq68WvTktf1-fD_tEnR1juPfl06S4SjZQQyP2Ms1gHcH_oGM__5xZ5h2BpyPnhFoSK';
 const PERCENTAGE_INCREASE = 0.111111111111111111; 
 
 function padRight(str, length) {
@@ -73,14 +75,14 @@ document.getElementById('cropPriceForm').addEventListener('submit', function(e) 
     const publicDescription = `**Data harga publik terbaru yang dimasukkan:**\n\`\`\`css\n${publicFieldsText}\n\`\`\``;
     const privateDescription = `**Harga Private (Public + 11.11%):**\n\`\`\`yaml\n${privateFieldsText}\n\`\`\``; 
 
-    // Gabungkan kedua data ke dalam satu Embed Field untuk menghindari batas panjang Discord
+    // Gabungkan kedua data ke dalam satu Embed Field
     const discordPayload = {
         username: "Crop Price Tracker Bot",
         avatar_url: "https://discord.com/assets/f7652397753a47900b213.svg", 
         embeds: [
             {
                 title: "🌱 Crop Price Report",
-                description: publicDescription + '\n\n' + privateDescription, // Gabung di satu deskripsi
+                description: publicDescription + '\n\n' + privateDescription, 
                 color: 5763719, // Warna Hijau
                 footer: {
                     text: `Diinput oleh Anonymous • ${timeText} at ${formattedTime}`,
