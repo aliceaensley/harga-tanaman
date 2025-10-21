@@ -1,57 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Input Harga Tanaman</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Harga Tanaman & Discord</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        input[type="number"] { padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 80px; text-align: right; margin-right: 5px; }
+        .private-prices { background-color: #f9f9f9; padding: 15px; border: 1px solid #eee; border-radius: 4px; margin-top: 15px; }
+        .private-prices p { margin: 5px 0; }
+        button { background-color: #5865f2; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #4f5bcf; }
+    </style>
 </head>
 <body>
 
-    <h2>Public Crop Prices</h2>
-    <form id="cropPriceForm">
-        <table>
-            <thead>
-                <tr>
-                    <th>Crop Name:</th>
-                    <th>Crop Supply:</th>
-                    <th>Selling Prices:</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Carrot</td>
-                    <td><input type="number" name="carrotSupplyPublic" required value="172" step="1"> crops</td>
-                    <td>Rp<input type="number" name="carrotPricePublic" required value="27.42" step="0.01">/crop</td>
-                </tr>
-                <tr>
-                    <td>Potato</td>
-                    <td><input type="number" name="potatoSupplyPublic" required value="0" step="1"> crops</td>
-                    <td>Rp<input type="number" name="potatoPricePublic" required value="29.70" step="0.01">/crop</td>
-                </tr>
-                <tr>
-                    <td>Tomato</td>
-                    <td><input type="number" name="tomatoSupplyPublic" required value="543" step="1"> crops</td>
-                    <td>Rp<input type="number" name="tomatoPricePublic" required value="22.50" step="0.01">/crop</td>
-                </tr>
-                <tr>
-                    <td>Onion</td>
-                    <td><input type="number" name="onionSupplyPublic" required value="143" step="1"> crops</td>
-                    <td>Rp<input type="number" name="onionPricePublic" required value="27.81" step="0.01">/crop</td>
-                </tr>
-                <tr>
-                    <td>Cucumber</td>
-                    <td><input type="number" name="cucumberSupplyPublic" required value="224" step="1"> crops</td>
-                    <td>Rp<input type="number" name="cucumberPricePublic" required value="26.73" step="0.01">/crop</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container">
+        <h1>🌱 Input Harga Tanaman</h1>
+        <p>Isi data Harga Jual dan Supply Publik di bawah ini.</p>
+        
+        <form id="cropPriceForm">
+            <h2>Public Crop Prices</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Crop Name:</th>
+                        <th>Crop Supply:</th>
+                        <th>Selling Prices:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Carrot</td>
+                        <td><input type="number" name="carrotSupplyPublic" required value="172" step="1" min="0"> crops</td>
+                        <td>Rp<input type="number" name="carrotPricePublic" required value="27.42" step="0.01" min="0">/crop</td>
+                    </tr>
+                    <tr>
+                        <td>Potato</td>
+                        <td><input type="number" name="potatoSupplyPublic" required value="0" step="1" min="0"> crops</td>
+                        <td>Rp<input type="number" name="potatoPricePublic" required value="29.70" step="0.01" min="0">/crop</td>
+                    </tr>
+                    <tr>
+                        <td>Tomato</td>
+                        <td><input type="number" name="tomatoSupplyPublic" required value="543" step="1" min="0"> crops</td>
+                        <td>Rp<input type="number" name="tomatoPricePublic" required value="22.50" step="0.01" min="0">/crop</td>
+                    </tr>
+                    <tr>
+                        <td>Onion</td>
+                        <td><input type="number" name="onionSupplyPublic" required value="143" step="1" min="0"> crops</td>
+                        <td>Rp<input type="number" name="onionPricePublic" required value="27.81" step="0.01" min="0">/crop</td>
+                    </tr>
+                    <tr>
+                        <td>Cucumber</td>
+                        <td><input type="number" name="cucumberSupplyPublic" required value="224" step="1" min="0"> crops</td>
+                        <td>Rp<input type="number" name="cucumberPricePublic" required value="26.73" step="0.01" min="0">/crop</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button type="submit">Kirim dan Hitung Harga ke Discord</button>
+        </form>
 
-        <button type="submit">Kirim ke Discord</button>
-    </form>
+        <hr>
 
-    <hr>
-
-    <h2>Private Crop Prices (Otomatis Dihitung)</h2>
-    <div id="privatePrices">
+        <h2>Private Crop Prices (Otomatis Dihitung)</h2>
+        <div id="privatePrices" class="private-prices">
+            <p>Harga privat akan ditampilkan di sini setelah Anda mengklik tombol kirim.</p>
         </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
