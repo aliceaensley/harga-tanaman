@@ -1,82 +1,112 @@
-const speedValueEl = document.getElementById('speed-value');
-const gearValueEl = document.getElementById('gear-value');
-const outerRingFillEl = document.getElementById('outer-ring-fill');
-const fuelBarFillEl = document.getElementById('fuel-bar-fill');
-const healthBarFillEl = document.getElementById('health-bar-fill');
+const DISCORD_WEBHOOK_URL = 'GANTI_DENGAN_URL_WEBHOOK_ANDA_DI_SINI';
+const PERCENTAGE_INCREASE = 0.111111111111111111; // 11.1111111111111111%
 
-// --- Konstan NUI ---
-const MAX_RPM = 8000;
-const MAX_RPM_ANGLE = 270; // Sudut putaran ring luar
-
-// Fungsi utama untuk memperbarui HUD berdasarkan data yang dikirim dari game
-function updateHUD(data) {
+document.getElementById('cropPriceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     
-    if (!data || data.type !== 'updateSpeedometer') return;
-
-    // 1. Kecepatan Digital (data.speed = KM/H)
-    const speed = Math.floor(data.speed);
-    const formattedSpeed = String(speed).padStart(3, '0');
-    speedValueEl.textContent = formattedSpeed;
-
-    // 2. RPM Ring Luar (data.rpm = 0.0 sampai 1.0)
-    const rpmValue = data.rpm * MAX_RPM;
-    const rpmPercentage = data.rpm;
-
-    // Hitung sudut putaran dari posisi awal (45 derajat)
-    const rotationDegrees = 45 + (rpmPercentage * MAX_RPM_ANGLE);
-    outerRingFillEl.style.transform = `rotate(${rotationDegrees}deg)`;
+    const form = e.target;
+    const formData = new FormData(form);
     
-    // Logika pewarnaan RPM (Redline pada 7000 RPM)
-    const rpmColor = 
-        rpmValue > 7000 ? '#ff5252' : // Danger Red
-        rpmValue > 5000 ? '#FFC107' : // Warning Yellow
-        '#00bcd4'; // Accent Blue
+    const crops = [
+        'Carrot', 'Potato', 'Tomato', 'Onion', 'Cucumber'
+    ];
+    
+    let publicData = [];
+    let privateData = [];
+    let privatePricesHTML = '';
+    
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+    // 1. Kumpulkan data dan hitung harga private
+    crops.forEach(crop => {
+        const cropLower = crop.toLowerCase();
         
-    outerRingFillEl.style.borderColor = rpmColor;
-    outerRingFillEl.style.filter = `drop-shadow(0 0 7px ${rpmColor})`;
+        // Ambil nilai dari input Public
+        const supplyPublic = parseFloat(formData.get(`${cropLower}SupplyPublic`));
+        const pricePublic = parseFloat(formData.get(`${cropLower}PricePublic`));
 
-    // 3. Gear Display
-    // Asumsi: data.gear 0=Netral, 1+=Gigi
-    gearValueEl.textContent = data.gear === 0 ? 'N' : data.gear;
+        // Hitung harga Private
+        // Harga Private = Harga Public * (1 + 11.1111111111111111%)
+        let pricePrivate = pricePublic * (1 + PERCENTAGE_INCREASE);
+        
+        // Bulatkan ke 2 desimal
+        pricePrivate = parseFloat(pricePrivate.toFixed(2)); 
 
-    // 4. Fuel Bar (data.fuel = 0-100%)
-    fuelBarFillEl.style.width = `${data.fuel}%`;
-    const fuelColor = data.fuel < 20 ? '#ff5252' : data.fuel < 50 ? '#FFC107' : '#4CAF50';
-    fuelBarFillEl.style.backgroundColor = fuelColor;
-
-    // 5. Health Bar (data.engineHealth = 0-100%)
-    healthBarFillEl.style.width = `${data.engineHealth}%`;
-    const healthColor = data.engineHealth < 20 ? '#ff5252' : data.engineHealth < 50 ? '#FFC107' : '#4CAF50';
-    healthBarFillEl.style.backgroundColor = healthColor;
-    
-    // 6. Tampilkan/Sembunyikan Kontainer
-    const container = document.getElementById('speedometer-container');
-    if (data.inVehicle) {
-        container.style.display = 'flex'; 
-    } else {
-        container.style.display = 'none'; 
-    }
-}
-
-// --- Event Listener untuk Menerima Data dari Game (PENTING!) ---
-
-window.addEventListener('message', (event) => {
-    // Memproses pesan yang dikirim dari skrip game (Lua/JS Client)
-    updateHUD(event.data);
-});
-
-// Sembunyikan secara default saat NUI dimuat
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('speedometer-container').style.display = 'none';
-    
-    // Opsional: Kirim sinyal NUI siap ke game
-    /*
-    if (typeof GetParentResourceName !== 'undefined') {
-        fetch(`https://${GetParentResourceName()}/nuiReady`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-            body: JSON.stringify({})
+        // Simpan data
+        publicData.push({
+            name: crop,
+            supply: supplyPublic,
+            price: pricePublic.toFixed(2)
         });
-    }
-    */
+
+        privateData.push({
+            name: crop,
+            supply: supplyPublic, // Supply sama dengan Public
+            price: pricePrivate.toFixed(2)
+        });
+
+        // Tampilkan Harga Private di halaman web
+        privatePricesHTML += `<p>
+            <strong>${crop}</strong>: 
+            Supply: ${supplyPublic} crops, 
+            Selling Prices: Rp${pricePrivate.toFixed(2)}/crop
+        </p>`;
+    });
+
+    // Tampilkan hasil perhitungan Private di div
+    document.getElementById('privatePrices').innerHTML = privatePricesHTML;
+
+    // 2. Format pesan untuk Discord Webhook
+    
+    // Buat deskripsi Public
+    const publicFields = publicData.map(c => 
+        `**${c.name}**: ${c.supply} crops, **Rp${c.price}/crop**`
+    ).join('\n');
+
+    // Buat deskripsi Private
+    const privateFields = privateData.map(c => 
+        `**${c.name}**: ${c.supply} crops, **Rp${c.price}/crop**`
+    ).join('\n');
+
+    // Struktur pesan Discord (Embed)
+    const discordPayload = {
+        embeds: [
+            {
+                title: "🌱 Public Crop Prices",
+                description: publicFields,
+                color: 65280, // Warna hijau
+            },
+            {
+                title: "🌿 Private Crop Prices",
+                description: privateFields,
+                color: 16753920, // Warna emas
+                footer: {
+                    text: `Last updated by Anonymous • Hari Ini at ${formattedTime}`
+                }
+            }
+        ]
+    };
+
+    // 3. Kirim data ke Discord Webhook
+    fetch(DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(discordPayload),
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Data berhasil dikirim ke Discord!');
+            console.log('Successfully sent to Discord Webhook');
+        } else {
+            alert('Gagal mengirim data ke Discord. Periksa URL Webhook Anda.');
+            console.error('Failed to send to Discord Webhook', response);
+        }
+    })
+    .catch(error => {
+        alert('Terjadi error saat koneksi ke Discord.');
+        console.error('Error:', error);
+    });
 });
