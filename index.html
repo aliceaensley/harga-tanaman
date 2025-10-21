@@ -4,27 +4,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Harga Tanaman & Discord</title>
+    <link href="https://fonts.googleapis.com/css2?family=gg+sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h2 { border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-        input[type="number"] { padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 80px; text-align: right; margin-right: 5px; }
-        .private-prices { background-color: #f9f9f9; padding: 15px; border: 1px solid #eee; border-radius: 4px; margin-top: 15px; }
-        .private-prices p { margin: 5px 0; }
-        button { background-color: #5865f2; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 20px; }
-        button:hover { background-color: #4f5bcf; }
+        /* Mengatur font agar mirip Discord */
+        @font-face {
+            font-family: 'gg sans';
+            src: url('https://discord.com/assets/fonts/ggsans-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'gg sans';
+            src: url('https://discord.com/assets/fonts/ggsans-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'gg sans';
+            src: url('https://discord.com/assets/fonts/ggsans-Semibold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'gg sans';
+            src: url('https://discord.com/assets/fonts/ggsans-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        body { 
+            font-family: 'gg sans', sans-serif; 
+            background-color: #36393f; /* Latar belakang mirip Discord */
+            color: #dcddde; /* Warna teks umum */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px; /* Lebar maksimal seperti tampilan gambar */
+        }
+
+        .card {
+            background-color: #2f3136; /* Warna card mirip embed Discord */
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 0 rgba(4,4,5,0.2), 0 2px 0 rgba(4,4,5,0.2), 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .card-header .icon {
+            font-size: 24px;
+            margin-right: 8px;
+            color: #2ecc71; /* Warna hijau untuk ikon tanaman */
+        }
+        .card-header h2 {
+            margin: 0;
+            font-size: 16px; /* Ukuran font judul */
+            font-weight: 600; /* Semibold */
+            color: #ffffff; /* Warna judul lebih terang */
+        }
+
+        .description {
+            font-size: 12px;
+            color: #72767d; /* Warna teks deskripsi */
+            margin-bottom: 15px;
+        }
+
+        .form-section table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .form-section th, .form-section td {
+            padding: 8px 0;
+            border-bottom: 1px solid #4f545c; /* Garis pemisah */
+        }
+        .form-section th {
+            color: #b9bbbe; /* Warna header kolom */
+            font-weight: 600;
+        }
+        .form-section td {
+            color: #dcddde;
+        }
+        .form-section td:first-child { /* Crop Name */
+            font-weight: 500; /* Medium */
+        }
+
+        input[type="number"] {
+            background-color: #202225; /* Warna input mirip Discord */
+            border: 1px solid #4f545c;
+            border-radius: 3px;
+            padding: 5px 8px;
+            color: #dcddde;
+            width: 70px; /* Lebar input */
+            text-align: right;
+            margin-right: 5px;
+            font-family: 'gg sans', sans-serif;
+            font-size: 14px;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #7289da; /* Warna fokus mirip Discord */
+        }
+        
+        .unit-text {
+            font-size: 12px;
+            color: #b9bbbe;
+        }
+
+        button {
+            background-color: #5865f2; /* Warna tombol Discord */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 20px;
+            width: 100%; /* Lebar penuh */
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background-color: #4f5bcf;
+        }
+
+        .footer-text {
+            font-size: 11px;
+            color: #72767d;
+            margin-top: 15px;
+            border-top: 1px solid #4f545c;
+            padding-top: 10px;
+        }
+        .footer-text img {
+            vertical-align: middle;
+            margin-right: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        /* Styling untuk Private Crop Prices */
+        #privatePrices {
+            /* Warna latar belakang card sudah diatur di .card */
+            /* Warna teks dan lainnya sudah diatur di global atau .card */
+            padding-top: 5px; /* Sedikit padding atas agar tidak terlalu mepet */
+        }
+        #privatePrices table {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>🌱 Input Harga Tanaman</h1>
-        <p>Isi data Harga Jual dan Supply Publik di bawah ini.</p>
-        
-        <form id="cropPriceForm">
-            <h2>Public Crop Prices</h2>
+    <div class="main-container">
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🌱</span>
+                <h2>Public Crop Prices</h2>
+            </div>
+            <div class="description">
+                These following data are not automatically updated by the server.<br>
+                The data may not be accurate for a certain period of time.
+            </div>
+            <form id="cropPriceForm" class="form-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Crop Name:</th>
+                            <th>Crop Supply:</th>
+                            <th>Selling Prices:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Carrot</td>
+                            <td><input type="number" name="carrotSupplyPublic" required value="172" step="1" min="0"> <span class="unit-text">crops</span></td>
+                            <td>$<input type="number" name="carrotPricePublic" required value="27.42" step="0.01" min="0"> <span class="unit-text">/crop</span></td>
+                        </tr>
+                        <tr>
+                            <td>Potato</td>
+                            <td><input type="number" name="potatoSupplyPublic" required value="0" step="1" min="0"> <span class="unit-text">crops</span></td>
+                            <td>$<input type="number" name="potatoPricePublic" required value="29.70" step="0.01" min="0"> <span class="unit-text">/crop</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tomato</td>
+                            <td><input type="number" name="tomatoSupplyPublic" required value="543" step="1" min="0"> <span class="unit-text">crops</span></td>
+                            <td>$<input type="number" name="tomatoPricePublic" required value="22.50" step="0.01" min="0"> <span class="unit-text">/crop</span></td>
+                        </tr>
+                        <tr>
+                            <td>Onion</td>
+                            <td><input type="number" name="onionSupplyPublic" required value="143" step="1" min="0"> <span class="unit-text">crops</span></td>
+                            <td>$<input type="number" name="onionPricePublic" required value="27.81" step="0.01" min="0"> <span class="unit-text">/crop</span></td>
+                        </tr>
+                        <tr>
+                            <td>Cucumber</td>
+                            <td><input type="number" name="cucumberSupplyPublic" required value="224" step="1" min="0"> <span class="unit-text">crops</span></td>
+                            <td>$<input type="number" name="cucumberPricePublic" required value="26.73" step="0.01" min="0"> <span class="unit-text">/crop</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button type="submit">Send to Discord and Calculate Private Prices</button>
+            </form>
+        </div>
+
+        <div class="card" id="privatePrices">
+            <div class="card-header">
+                <span class="icon">🌿</span>
+                <h2>Private Crop Prices</h2>
+            </div>
+            <div class="description">
+                These following data are not automatically updated by the server.<br>
+                The data may not be accurate for a certain period of time.
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -34,42 +239,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Carrot</td>
-                        <td><input type="number" name="carrotSupplyPublic" required value="172" step="1" min="0"> crops</td>
-                        <td>Rp<input type="number" name="carrotPricePublic" required value="27.42" step="0.01" min="0">/crop</td>
-                    </tr>
-                    <tr>
-                        <td>Potato</td>
-                        <td><input type="number" name="potatoSupplyPublic" required value="0" step="1" min="0"> crops</td>
-                        <td>Rp<input type="number" name="potatoPricePublic" required value="29.70" step="0.01" min="0">/crop</td>
-                    </tr>
-                    <tr>
-                        <td>Tomato</td>
-                        <td><input type="number" name="tomatoSupplyPublic" required value="543" step="1" min="0"> crops</td>
-                        <td>Rp<input type="number" name="tomatoPricePublic" required value="22.50" step="0.01" min="0">/crop</td>
-                    </tr>
-                    <tr>
-                        <td>Onion</td>
-                        <td><input type="number" name="onionSupplyPublic" required value="143" step="1" min="0"> crops</td>
-                        <td>Rp<input type="number" name="onionPricePublic" required value="27.81" step="0.01" min="0">/crop</td>
-                    </tr>
-                    <tr>
-                        <td>Cucumber</td>
-                        <td><input type="number" name="cucumberSupplyPublic" required value="224" step="1" min="0"> crops</td>
-                        <td>Rp<input type="number" name="cucumberPricePublic" required value="26.73" step="0.01" min="0">/crop</td>
-                    </tr>
+                    <tr><td colspan="3"><em>Click "Send to Discord and Calculate Private Prices" to see calculated prices.</em></td></tr>
                 </tbody>
             </table>
-            
-            <button type="submit">Kirim dan Hitung Harga ke Discord</button>
-        </form>
-
-        <hr>
-
-        <h2>Private Crop Prices (Otomatis Dihitung)</h2>
-        <div id="privatePrices" class="private-prices">
-            <p>Harga privat akan ditampilkan di sini setelah Anda mengklik tombol kirim.</p>
+            <div class="footer-text" id="privatePricesFooter">
+                <img src="https://discord.com/assets/f7652397753a47900b213.svg" alt="Anonymous icon"> Last updated by Anonymous • Yesterday at 15.15
+            </div>
         </div>
     </div>
 
