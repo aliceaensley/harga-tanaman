@@ -1,48 +1,57 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speedometer NUI Final</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <title>Input Harga Tanaman</title>
 </head>
 <body>
-    
-    <div id="speedometer-container">
-        
-        <div id="outer-ring-bg"></div>
-        <div id="outer-ring-fill"></div>
 
-        <div id="center-display">
-            <div id="speed-value">000</div>
-            <div id="speed-unit">KM/H</div>
+    <h2>Public Crop Prices</h2>
+    <form id="cropPriceForm">
+        <table>
+            <thead>
+                <tr>
+                    <th>Crop Name:</th>
+                    <th>Crop Supply:</th>
+                    <th>Selling Prices:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Carrot</td>
+                    <td><input type="number" name="carrotSupplyPublic" required value="172" step="1"> crops</td>
+                    <td>Rp<input type="number" name="carrotPricePublic" required value="27.42" step="0.01">/crop</td>
+                </tr>
+                <tr>
+                    <td>Potato</td>
+                    <td><input type="number" name="potatoSupplyPublic" required value="0" step="1"> crops</td>
+                    <td>Rp<input type="number" name="potatoPricePublic" required value="29.70" step="0.01">/crop</td>
+                </tr>
+                <tr>
+                    <td>Tomato</td>
+                    <td><input type="number" name="tomatoSupplyPublic" required value="543" step="1"> crops</td>
+                    <td>Rp<input type="number" name="tomatoPricePublic" required value="22.50" step="0.01">/crop</td>
+                </tr>
+                <tr>
+                    <td>Onion</td>
+                    <td><input type="number" name="onionSupplyPublic" required value="143" step="1"> crops</td>
+                    <td>Rp<input type="number" name="onionPricePublic" required value="27.81" step="0.01">/crop</td>
+                </tr>
+                <tr>
+                    <td>Cucumber</td>
+                    <td><input type="number" name="cucumberSupplyPublic" required value="224" step="1"> crops</td>
+                    <td>Rp<input type="number" name="cucumberPricePublic" required value="26.73" step="0.01">/crop</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="submit">Kirim ke Discord</button>
+    </form>
+
+    <hr>
+
+    <h2>Private Crop Prices (Otomatis Dihitung)</h2>
+    <div id="privatePrices">
         </div>
-
-        <div id="gear-display">
-            <span class="label">GEAR</span>
-            <span id="gear-value">N</span>
-        </div>
-
-        <div id="bottom-status">
-            <div class="status-item">
-                <span class="label">FUEL</span>
-                <div class="bar-bg">
-                    <div id="fuel-bar-fill" class="bar-fill"></div>
-                </div>
-            </div>
-            <div class="status-item">
-                <span class="label">HEALTH</span>
-                <div class="bar-bg">
-                    <div id="health-bar-fill" class="bar-fill"></div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
     <script src="script.js"></script>
 </body>
